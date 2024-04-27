@@ -11,3 +11,6 @@ Run with
 ```bash
 pnpm run dev
 ````
+# Config
+node version `v20.12.2`
+pnpm `9.0.6`

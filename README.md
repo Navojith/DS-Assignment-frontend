@@ -12,5 +12,5 @@ Run with
 pnpm run dev
 ````
 # Config
-node version `v20.12.2`
+node version `v20.12.2` <br />
 pnpm `9.0.6`

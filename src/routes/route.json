@@ -1,0 +1,11 @@
+{
+  "ROOT": {
+    "route": "/"
+  },
+  "LOGIN": {
+    "route": "/login"
+  },
+  "ACCOUNT": {
+    "route": "/account"
+  }
+}

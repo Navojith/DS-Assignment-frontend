@@ -1,7 +1,13 @@
-# React + TypeScript + Vite + Tailwind + DaisyUi
+# React + TypeScript + Vite + Tailwind + DaisyUI
 
 # ATTENTION: DONT use npm. Use pnpm instead
 
 # Build Steps
-Install with `pnpm i`
-Run with `pnpm run dev`
+Install with 
+```bash 
+pnpm i
+```
+Run with 
+```bash
+pnpm run dev
+````

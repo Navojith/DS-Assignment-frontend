@@ -1,5 +1,11 @@
+import PageContainer from '../../components/PageContainer/PageContainer';
+
 const Account = () => {
-  return <div>Account</div>;
+  return (
+    <PageContainer justifyContentCenter={true} alignItemsCenter={true}>
+      <div>Account</div>;
+    </PageContainer>
+  );
 };
 
 export default Account;

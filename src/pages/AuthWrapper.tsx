@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuthentication } from '../hooks/useAuthentication';
 import { ROOT, LOGIN } from '../routes/route.json';
 import Home from './Home/Home';
@@ -10,14 +10,18 @@ const AuthWrapper = () => {
   if (isLoading) {
     // return <PageLoadingAnimation />;
     return 'loading';
-  } else if (!user) {
-    if (pathname === `${ROOT.route}${LOGIN.route}`) {
-      return <Outlet />;
-    } else {
+  } else if (user === null) {
+    if (pathname === `${ROOT.route}`) {
       return <Home />;
+    } else {
+      return <Navigate to={`${LOGIN.route}`} replace />;
     }
   } else {
-    return <Outlet />;
+    if (pathname === `${LOGIN.route}`) {
+      return <Navigate to={`${ROOT.route}`} replace />;
+    } else {
+      return <Outlet />;
+    }
   }
 };
 

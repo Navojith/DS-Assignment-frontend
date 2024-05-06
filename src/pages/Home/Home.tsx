@@ -1,5 +1,11 @@
+import PageContainer from '../../components/PageContainer/PageContainer';
+
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <PageContainer justifyContentCenter={true} alignItemsCenter={true}>
+      <div>Home</div>
+    </PageContainer>
+  );
 };
 
 export default Home;

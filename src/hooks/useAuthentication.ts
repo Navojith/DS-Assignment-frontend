@@ -8,7 +8,7 @@ export interface User {
 }
 
 export const useAuthentication = () => {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -19,6 +19,7 @@ export const useAuthentication = () => {
       name: 'Example',
       avatar: 'https://example.com/avatar.png',
     });
+    //setUser(null);
     setIsLoading(false);
   }, []);
   return { user, isLoading };

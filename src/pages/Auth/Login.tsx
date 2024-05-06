@@ -1,5 +1,11 @@
+import PageContainer from '../../components/PageContainer/PageContainer';
+
 const Login = () => {
-  return <div>Login</div>;
+  return (
+    <PageContainer justifyContentCenter={true} alignItemsCenter={true}>
+      Login
+    </PageContainer>
+  );
 };
 
 export default Login;

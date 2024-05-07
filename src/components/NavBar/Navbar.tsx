@@ -45,12 +45,15 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        {/* placeholder name. change it if you got a better one */}
+        <Link to="./" className="btn btn-ghost text-xl">
+          CourseRealm
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link to={'/'}>Home</Link>
+            <Link to={'./'}>Home</Link>
           </li>
           <li>
             <details>

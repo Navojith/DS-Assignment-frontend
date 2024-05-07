@@ -13,7 +13,7 @@ const PageContainer = ({
 }: Props) => {
   return (
     <div
-      className={`container mx-auto ${
+      className={`container mx-auto pt-10 ${
         justifyContentCenter ? 'flex justify-center' : ''
       } ${alignItemsCenter ? 'flex items-center' : ''}`}
       style={{ minHeight: fullHeight ? 'calc(100vh - 68px)' : '' }}

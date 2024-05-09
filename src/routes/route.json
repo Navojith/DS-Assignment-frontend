@@ -13,5 +13,8 @@
   },
   "MY_COURSES": {
     "route": "/my-courses"
+  },
+  "CREATE_COURSE": {
+    "route": "/create-course"
   }
 }

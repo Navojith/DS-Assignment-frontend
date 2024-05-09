@@ -1,12 +1,20 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { ROOT, ACCOUNT, LOGIN, COURSE, MY_COURSES } from './route.json';
-import Account from '../pages/profile/Account';
-import AuthWrapper from '../pages/AuthWrapper';
 import { useAuthentication } from '../hooks/useAuthentication';
-import Login from '../pages/auth/Login';
-import Home from '../pages/home/Home';
+import Login from '../pages/Auth/Login';
+import AuthWrapper from '../pages/AuthWrapper';
+import Home from '../pages/Home/Home';
+import Account from '../pages/Profile/Account';
 import Course from '../pages/course/Course';
+import CreateCourse from '../pages/createCourse/CreateCourse';
 import MyCourses from '../pages/myCourses/MyCourses';
+import {
+  ACCOUNT,
+  COURSE,
+  CREATE_COURSE,
+  LOGIN,
+  MY_COURSES,
+  ROOT,
+} from './route.json';
 
 const AppRoutes = () => {
   const { user } = useAuthentication();
@@ -18,6 +26,7 @@ const AppRoutes = () => {
         <Route path={COURSE.route} element={<Course />} />
         <Route path={ROOT.route} element={<Home />} />
         <Route path={MY_COURSES.route} element={<MyCourses />} />
+        <Route path={CREATE_COURSE.route} element={<CreateCourse />} />
       </Route>
       <Route
         path={LOGIN.route}

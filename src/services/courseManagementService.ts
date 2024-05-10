@@ -17,6 +17,19 @@ export const getCourse = async (courseId: string) => {
     console.error(err);
   }
 };
+export const getAllCourses = async () => {
+  try {
+    const response = await apiRequestService.sendRequest(
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/courses`,
+      'get'
+    );
+    if (response) {
+      return response;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 export const getCourseContent = async (courseId: string) => {
   try {

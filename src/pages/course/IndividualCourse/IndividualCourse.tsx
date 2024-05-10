@@ -12,8 +12,9 @@ import {
 } from '../../../services/progressionService';
 import { Progression } from '../../myCourses/MyCourses';
 
-interface Course {
-  id: string;
+export interface Course {
+  _id: string;
+  courseId: string;
   name: string;
   description: string;
   price: number;

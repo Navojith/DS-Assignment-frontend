@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import CreateCourseForm from '../../components/CreateCourse/CreateCourseForm';
+import CreateCourseForm from '../../components/Course/CreateCourseForm';
+import RedirectModal from '../../components/Course/RedirectModal';
 import PageContainer from '../../components/PageContainer/PageContainer';
 
 function CreateCourse() {
-  const [CreatedCourseID, setCreatedCourseID] = useState('');
+  const [createdCourseID, setCreatedCourseID] = useState('');
 
   return (
     <PageContainer>
       <CreateCourseForm setCreatedCourse={setCreatedCourseID} />
+      <RedirectModal createdCourse={createdCourseID} />
     </PageContainer>
   );
 }

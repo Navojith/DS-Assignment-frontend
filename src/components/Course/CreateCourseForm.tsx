@@ -16,7 +16,7 @@ const CreateCourseForm = ({ setCreatedCourse }: Props) => {
   function handleCreate(): void {
     apiRequestService
       .sendRequest(
-        'http://localhost:3001/courses',
+        'http://localhost:3000/courses',
         'POST',
         {},
         {},
@@ -28,12 +28,17 @@ const CreateCourseForm = ({ setCreatedCourse }: Props) => {
         }
       )
       .then((response) => {
-        console.log('response', response);
-        setCreatedCourse(response.data.courseId);
+        setError('');
+        setCreatedCourse(response?.courseId);
+        const modal = document.getElementById(
+          'content_confirmation_modal'
+        ) as HTMLDialogElement;
+        if (modal) {
+          modal.showModal();
+        }
       })
       .catch((error) => {
-        console.log('error', error);
-        setError(error.response.data.message);
+        setError(error?.message || 'An error occurred');
       })
       .finally(() => {
         setShowToast(true);

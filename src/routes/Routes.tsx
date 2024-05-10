@@ -6,6 +6,7 @@ import Home from '../pages/Home/Home';
 import Account from '../pages/Profile/Account';
 import AddCourseContent from '../pages/addCourseContent/[id]';
 import Course from '../pages/course/Course';
+import IndividualCourse from '../pages/course/IndividualCourse/IndividualCourse';
 import CreateCourse from '../pages/createCourse/CreateCourse';
 import MyCourses from '../pages/myCourses/MyCourses';
 import {
@@ -25,7 +26,13 @@ const AppRoutes = () => {
     <Routes>
       <Route path={ROOT.route} element={<AuthWrapper />}>
         <Route path={ACCOUNT.route} element={<Account />} />
-        <Route path={COURSE.route} element={<Course />} />
+        <Route path={COURSE.route}>
+          <Route
+            path={COURSE.subRoutes.courseId}
+            element={<IndividualCourse />}
+          />
+          <Route path={''} element={<Course />} />
+        </Route>
         <Route path={ROOT.route} element={<Home />} />
         <Route path={MY_COURSES.route} element={<MyCourses />} />
         <Route path={CREATE_COURSE.route} element={<CreateCourse />} />

@@ -6,6 +6,7 @@ import { COURSE } from '../../routes/route.json';
 
 interface Progression {
   completedSteps: number;
+  totalSteps: number;
   userId: string;
   id: string;
   courseDetails: {
@@ -18,12 +19,13 @@ interface Progression {
 function MyCourses() {
   const [courses, setCourses] = useState<Progression[]>([]);
   const navigate = useNavigate();
+  console.log(courses);
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const response = await getMyCoursesWithProgression(
-          '662e30a75b0e59f7fb038023'
+          '6630b0f269c099f21afc289d'
         );
         if (response) {
           setCourses(response);
@@ -54,7 +56,15 @@ function MyCourses() {
                   {course.courseDetails.name}
                 </h3>
                 <p>{course.courseDetails.description}</p>
-                <p>Progress: {course.completedSteps}%</p>
+                <p>
+                  Progress:{' '}
+                  {course.totalSteps > 0
+                    ? Math.round(
+                        (course.completedSteps / course.totalSteps) * 100
+                      )
+                    : 0}
+                  %
+                </p>
               </div>
               <div className="ml-auto mr-5">
                 <button className="bg-primaryLighter hover:bg-primaryDarker border-text">

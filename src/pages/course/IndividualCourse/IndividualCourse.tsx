@@ -25,6 +25,7 @@ interface CourseContent {
   step: number;
   content: any;
   _id: string;
+  type?: string;
 }
 
 export interface CompletedSteps {
@@ -37,10 +38,15 @@ export interface UpdateStepsBody {
   completedSteps: CompletedSteps;
 }
 
+interface WeeklyContent {
+  step: number;
+  content: CourseContent[];
+}
+
 function IndividualCourse() {
   const { user } = useAuthentication();
   const [course, setCourse] = useState<Course | null>(null);
-  const [steps, setSteps] = useState<CourseContent[]>([]);
+  const [steps, setSteps] = useState<WeeklyContent[]>([]);
   const [progress, setProgress] = useState<Progression>();
   const [isProgressLoading, setIsProgressLoading] = useState(true);
   const { courseId } = useParams();
@@ -56,8 +62,27 @@ function IndividualCourse() {
             getCourseProgression(user?.id, courseId),
           ]);
           setCourse(course);
-          setSteps(steps);
           setProgress(progress);
+          if (steps) {
+            const weeklyContent: WeeklyContent[] = [];
+
+            steps.map((step: CourseContent) => {
+              if (step.isApproved) {
+                const week = weeklyContent.find(
+                  (week) => week.step === step.step
+                );
+                if (week) {
+                  week.content.push(step);
+                } else {
+                  weeklyContent.push({
+                    step: step.step,
+                    content: [step],
+                  });
+                }
+              }
+            });
+            setSteps(weeklyContent);
+          }
         } catch (error) {
           console.error(error);
         }
@@ -108,42 +133,54 @@ function IndividualCourse() {
       {steps && (
         <div className="mt-10 flex flex-col gap-5">
           {steps?.map((step) => {
-            return step.isApproved ? (
+            return (
               <div
-                key={step._id}
+                key={step.step}
                 className="px-5 py-2 collapse collapse-arrow bg-primaryLighter border border-secondary"
               >
                 <input type="radio" name="my-accordion-2" defaultChecked />
                 <div className="collapse-title text-xl font-medium">
                   {`Week ${step.step}`}
                 </div>
-                <div className="collapse-content flex flex-col">
-                  <p>{step.content}</p>
-                  <img src="https://firebasestorage.googleapis.com/v0/b/af-assignment-2-343a3.appspot.com/o/files%2FNitro_Wallpaper_01_3840x2400.jpg?alt=media&token=c4c6a14b-301b-4336-97d8-efcf246fe0cd" />
-                  <button
-                    className={
-                      'mt-5 ml-auto flex items-center gap-2' +
-                      (progress?.completedSteps[step.step] === 0
-                        ? ''
-                        : 'btn btn-active btn-neutral')
-                    }
-                    onClick={() =>
-                      handleComplete(
-                        step.step,
-                        progress?.completedSteps[step.step] || 0
-                      )
-                    }
-                  >
-                    {isProgressLoading && (
-                      <span className="loading loading-spinner"></span>
-                    )}
-                    {progress?.completedSteps[step.step] === 0
-                      ? 'Mark as Completed'
-                      : 'Mark as not Completed'}
-                  </button>
+                <div className="collapse-content flex flex-col gap-5">
+                  {step.content.map((content) => (
+                    <>
+                      {content.type === 'image' ? (
+                        <img src={content.content} />
+                      ) : content.type === 'video' ? (
+                        <video controls>
+                          <source src={content.content} type="video/mp4" />
+                        </video>
+                      ) : (
+                        <p>{content.content}</p>
+                      )}
+
+                      <button
+                        className={
+                          'mt-5 ml-auto flex items-center gap-2' +
+                          (progress?.completedSteps[step.step] === 0
+                            ? ''
+                            : 'btn btn-active btn-neutral')
+                        }
+                        onClick={() =>
+                          handleComplete(
+                            step.step,
+                            progress?.completedSteps[step.step] || 0
+                          )
+                        }
+                      >
+                        {isProgressLoading && (
+                          <span className="loading loading-spinner"></span>
+                        )}
+                        {progress?.completedSteps[step.step] === 0
+                          ? 'Mark as Completed'
+                          : 'Mark as not Completed'}
+                      </button>
+                    </>
+                  ))}
                 </div>
               </div>
-            ) : null;
+            );
           })}
         </div>
       )}

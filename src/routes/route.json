@@ -16,5 +16,11 @@
   },
   "MY_COURSES": {
     "route": "/my-courses"
+  },
+  "CREATE_COURSE": {
+    "route": "/create-course"
+  },
+  "ADD_COURSE_CONTENT": {
+    "route": "/add-course-content/:id"
   }
 }

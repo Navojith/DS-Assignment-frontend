@@ -1,13 +1,23 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { ROOT, ACCOUNT, LOGIN, COURSE, MY_COURSES } from './route.json';
-import Account from '../pages/profile/Account';
-import AuthWrapper from '../pages/AuthWrapper';
 import { useAuthentication } from '../hooks/useAuthentication';
-import Login from '../pages/auth/Login';
-import Home from '../pages/home/Home';
+import Login from '../pages/Auth/Login';
+import AuthWrapper from '../pages/AuthWrapper';
+import Home from '../pages/Home/Home';
+import Account from '../pages/Profile/Account';
+import AddCourseContent from '../pages/addCourseContent/[id]';
 import Course from '../pages/course/Course';
-import MyCourses from '../pages/myCourses/MyCourses';
 import IndividualCourse from '../pages/course/IndividualCourse/IndividualCourse';
+import CreateCourse from '../pages/createCourse/CreateCourse';
+import MyCourses from '../pages/myCourses/MyCourses';
+import {
+  ACCOUNT,
+  ADD_COURSE_CONTENT,
+  COURSE,
+  CREATE_COURSE,
+  LOGIN,
+  MY_COURSES,
+  ROOT,
+} from './route.json';
 
 const AppRoutes = () => {
   const { user } = useAuthentication();
@@ -25,6 +35,8 @@ const AppRoutes = () => {
         </Route>
         <Route path={ROOT.route} element={<Home />} />
         <Route path={MY_COURSES.route} element={<MyCourses />} />
+        <Route path={CREATE_COURSE.route} element={<CreateCourse />} />
+        <Route path={ADD_COURSE_CONTENT.route} element={<AddCourseContent />} />
       </Route>
       <Route
         path={LOGIN.route}

@@ -44,6 +44,8 @@ function IndividualCourse() {
     fetchCourses();
   }, [courseId]);
 
+  const handleComplete = async () => {};
+
   return (
     <PageContainer>
       {course && (
@@ -66,7 +68,10 @@ function IndividualCourse() {
                 </div>
                 <div className="collapse-content flex flex-col">
                   <p>{step.content}</p>
-                  <button className="mt-5 ml-auto">Mark as Completed</button>
+                  <img src="https://firebasestorage.googleapis.com/v0/b/af-assignment-2-343a3.appspot.com/o/files%2FNitro_Wallpaper_01_3840x2400.jpg?alt=media&token=c4c6a14b-301b-4336-97d8-efcf246fe0cd" />
+                  <button className="mt-5 ml-auto" onClick={handleComplete}>
+                    Mark as Completed
+                  </button>
                 </div>
               </div>
             ) : null;

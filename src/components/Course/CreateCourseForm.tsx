@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import apiRequestService from '../../services/apiRequestService';
+import { createCourse } from '../../services/courseManagementService';
+import { CourseDTO } from '../../types/courseTypes';
 
 interface Props {
   setCreatedCourse: (courseID: string) => void;
@@ -14,19 +15,20 @@ const CreateCourseForm = ({ setCreatedCourse }: Props) => {
   const [error, setError] = useState('');
 
   function handleCreate(): void {
-    apiRequestService
-      .sendRequest(
-        'http://localhost:3000/courses',
-        'POST',
-        {},
-        {},
-        {
-          courseId,
-          name,
-          price,
-          description,
-        }
-      )
+    if (!courseId || !name || !price) {
+      setError('Please fill all the required fields');
+      setShowToast(true);
+      return;
+    }
+
+    const course: CourseDTO = {
+      courseId: courseId || '',
+      name: name || '',
+      price: price || '',
+      description: description || '',
+    };
+
+    createCourse(course)
       .then((response) => {
         setError('');
         setCreatedCourse(response?.courseId);
@@ -70,10 +72,10 @@ const CreateCourseForm = ({ setCreatedCourse }: Props) => {
         </div>
       )}
       <div className="h-[80vh] justify-center place-content-center text-center">
-        <div className="flex flex-col gap-10">
-          <h1 className="text-2xl font-semibold">Create Course</h1>
-          <div className="grid grid-cols-2 gap-2">
-            <label className="input input-bordered flex items-center gap-2 col-span-2">
+        <div className="flex flex-col gap-10 bg-primaryLighter p-5 rounded-md border-2 border-secondary">
+          <h1 className="text-2xl font-semibold">ADD NEW COURSE</h1>
+          <div className="grid grid-cols-2 gap-2 text-slate-700 font-semibold">
+            <label className="input input-secondary flex items-center gap-2 col-span-2">
               Course ID
               <input
                 type="text"
@@ -83,7 +85,7 @@ const CreateCourseForm = ({ setCreatedCourse }: Props) => {
                 onChange={(e) => setCourseId(e.target.value)}
               />
             </label>
-            <label className="input input-bordered flex items-center gap-2">
+            <label className="input input-secondary flex items-center gap-2">
               Name
               <input
                 type="text"
@@ -93,10 +95,10 @@ const CreateCourseForm = ({ setCreatedCourse }: Props) => {
                 onChange={(e) => setName(e.target.value)}
               />
             </label>
-            <label className="input input-bordered flex items-center gap-2">
+            <label className="input input-secondary flex items-center gap-2">
               Price $
               <input
-                type="text"
+                type="number"
                 className="grow"
                 placeholder="16.99"
                 value={price}
@@ -104,17 +106,17 @@ const CreateCourseForm = ({ setCreatedCourse }: Props) => {
               />
             </label>
             <textarea
-              className="textarea textarea-bordered col-span-2 textarea-lg"
+              className="textarea textarea-secondary col-span-2 textarea-lg"
               placeholder="Description of the course"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
           <div className="flex justify-center gap-8">
-            <button className="btn btn-primary" onClick={handleCreate}>
+            <button className="btn btn-secondary" onClick={handleCreate}>
               Create Course
             </button>
-            <button className="btn btn-secondary ml-2" onClick={handleCancel}>
+            <button className="btn btn-primary" onClick={handleCancel}>
               Cancel
             </button>
           </div>

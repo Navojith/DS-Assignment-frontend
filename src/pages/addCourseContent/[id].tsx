@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import CustomSelect from '../../components/CourseContent/CustomSelect';
 import PageContainer from '../../components/PageContainer/PageContainer';
 import storage from '../../firebaseConfig';
-import apiRequestService from '../../services/apiRequestService';
+import { getCourse } from '../../services/courseManagementService';
 import { CourseDTO } from '../../types/courseTypes';
 
 const Index = () => {
@@ -59,16 +59,9 @@ const Index = () => {
     handleUpload();
   }, [file, handleUpload]);
 
-  const fetchReq = apiRequestService.sendRequest(
-    `http://localhost:3000/courses/${id}`,
-    'GET',
-    {},
-    {}
-  );
-
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetchReq;
+      const response = await getCourse(id);
       if (response) {
         setCourseData(response);
       }
@@ -85,7 +78,7 @@ const Index = () => {
         <div className="text-2xl font-bold">
           Course Content of {courseData?.name}
         </div>
-        <div className="flex gap-10">
+        <div className="flex gap-10 justify-center">
           <CustomSelect
             prompt="Select Chapter"
             options={chapterOptions}
@@ -98,7 +91,7 @@ const Index = () => {
             setSelected={setSelectedContentType}
           />
         </div>
-        <div className="h-2/3">
+        <div className="h-2/3 w-full flex items-center justify-center">
           {percent > 0 && percent < 100 ? (
             <div
               className="radial-progress text-primary"
@@ -110,7 +103,7 @@ const Index = () => {
           ) : (
             <input
               type="file"
-              className="file-input file-input-bordered file-input-primary w-full max-w-xs"
+              className="file-input file-input-bordered file-input-secondary text-slate-700 w-full max-w-xs"
               onChange={handleFileChange}
             />
           )}

@@ -4,9 +4,10 @@
 
 :root {
   --primaryDarker-color: #0a0a0a;
+  --primaryDark-color: #111418;
+  --primaryLighter-color: #191e24;
   --secondary-color: #7c3aed;
   --text-color: #f5f3ff;
-  --primaryLighter-color: #191e24;
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

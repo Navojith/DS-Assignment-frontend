@@ -28,6 +28,7 @@ class APIRequestService {
         signal,
       };
 
+      console.log(config);
       this.instance.interceptors.request.use(
         async (config) => {
           try {

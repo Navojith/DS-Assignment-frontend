@@ -3,9 +3,10 @@ import PageContainer from '../../components/PageContainer/PageContainer';
 import { getMyCoursesWithProgression } from '../../services/progressionService';
 import { useNavigate } from 'react-router-dom';
 import { COURSE } from '../../routes/route.json';
+import { CompletedSteps } from '../course/IndividualCourse/IndividualCourse';
 
-interface Progression {
-  completedSteps: number;
+export interface Progression {
+  completedSteps: CompletedSteps;
   totalSteps: number;
   userId: string;
   id: string;

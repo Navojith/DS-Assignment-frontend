@@ -157,7 +157,6 @@ function IndividualCourse() {
                       ) : (
                         <p>{content.content}</p>
                       )}
-
                       <button
                         className={
                           'mt-5 ml-auto flex items-center gap-2' +

@@ -54,7 +54,7 @@ function Course() {
     const ownedCourseIds: string[] = ownedCourses.map(
       (course) => course.courseDetails.courseId
     );
-    console.log(ownedCourses);
+
     return ownedCourseIds.includes(courseId) ? (
       <button
         className="ml-auto"

@@ -2,26 +2,42 @@ import { useEffect, useState } from 'react';
 import PageContainer from '../../components/PageContainer/PageContainer';
 import { Course as CourseType } from './IndividualCourse/IndividualCourse';
 import { getAllCourses } from '../../services/courseManagementService';
+import { getMyCoursesWithProgression } from '../../services/progressionService';
+import { useAuthentication } from '../../hooks/useAuthentication';
+import { useNavigate } from 'react-router-dom';
+import routes from '../../routes/route.json';
+import { Progression } from '../myCourses/MyCourses';
 
 function Course() {
   const [courses, setCourses] = useState<CourseType[]>([]);
+  const { user } = useAuthentication();
   const [search, setSearch] = useState<string>('');
+  const [ownedCourses, setOwnCourses] = useState<Progression[]>([]);
   const [filteredCourses, setFilteredCourses] = useState<CourseType[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCourses = async () => {
-      try {
-        const response = await getAllCourses();
-        if (response) {
-          setCourses(response);
-          setFilteredCourses(response);
+      if (user?.id) {
+        try {
+          const [allCourses, owned] = await Promise.all([
+            getAllCourses(),
+            getMyCoursesWithProgression(user?.id),
+          ]);
+          if (allCourses) {
+            setCourses(allCourses);
+            setFilteredCourses(allCourses);
+          }
+          if (owned) {
+            setOwnCourses(owned);
+          }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
       }
     };
     fetchCourses();
-  }, []);
+  }, [user?.id]);
 
   useEffect(() => {
     const filteredCourses = courses.filter((course) =>
@@ -32,6 +48,25 @@ function Course() {
 
   const handleEnroll = (courseId: string) => {
     console.log('Enrolling to course', courseId);
+  };
+
+  const RenderButton = (courseId: string) => {
+    const ownedCourseIds: string[] = ownedCourses.map(
+      (course) => course.courseDetails.courseId
+    );
+    console.log(ownedCourses);
+    return ownedCourseIds.includes(courseId) ? (
+      <button
+        className="ml-auto"
+        onClick={() => navigate(`${routes.COURSE.route}/${courseId}`)}
+      >
+        View Course
+      </button>
+    ) : (
+      <button className="ml-auto" onClick={() => handleEnroll(courseId)}>
+        Enroll Now
+      </button>
+    );
   };
 
   return (
@@ -64,21 +99,16 @@ function Course() {
               <div
                 key={course._id}
                 className={
-                  'border border-secondary bg-primaryLighter hover:bg-primaryDark cursor-pointer p-3 md:px-10 md:py-5 rounded flex flex-row gap-2 items-center flex-wrap md:flex-nowrap'
+                  'border border-secondary bg-primaryLighter hover:bg-primaryDark p-3 md:px-10 md:py-5 rounded flex flex-row gap-2 items-center flex-wrap md:flex-nowrap'
                 }
               >
                 <div className="flex flex-col gap-2 w-[100%] md:w-[75%]">
                   <h3 className="text-xl font-bold">{course.name}</h3>
                   <p>{course.description}</p>
-                  <p>{`Price : ${course.price} lkr`}</p>
+                  <p>{`Price : ${course.price} $`}</p>
                 </div>
                 <div className="flex w-[100%] md:w-[25%]">
-                  <button
-                    className="ml-auto"
-                    onClick={() => handleEnroll(course.courseId)}
-                  >
-                    Enroll Now
-                  </button>
+                  {RenderButton(course.courseId)}
                 </div>
               </div>
             );

@@ -5,6 +5,9 @@
   "LOGIN": {
     "route": "/login"
   },
+  "SIGNUP": {
+    "route": "/signup"
+  },
   "ACCOUNT": {
     "route": "/account"
   },

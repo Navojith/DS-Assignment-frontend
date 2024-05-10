@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import routes from '../../routes/route.json';
+import { Link } from "react-router-dom";
+import routes from "../../routes/route.json";
 
 const Navbar = () => {
   return (
@@ -27,7 +27,7 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <Link to={'/'}>Home</Link>
+              <Link to={"/"}>Home</Link>
             </li>
             <li>
               <Link to={routes.COURSE.route}>Courses</Link>
@@ -53,7 +53,7 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link to={'./'}>Home</Link>
+            <Link to={"./"}>Home</Link>
           </li>
           <li>
             <details>
@@ -74,7 +74,14 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <Link to={routes.LOGIN.route} className="btn">
+          LogIn
+        </Link>
+      </div>
+      <div className="navbar-end">
+        <Link to={routes.SIGNUP.route} className="btn">
+          SignUp
+        </Link>
       </div>
     </div>
   );

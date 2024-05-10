@@ -1,23 +1,23 @@
-import { useState } from 'react';
-import apiRequestService from '../../services/apiRequestService';
+import { useState } from "react";
+import apiRequestService from "../../services/apiRequestService";
 
 interface Props {
   setCreatedCourse: (courseID: string) => void;
 }
 
 const CreateCourseForm = ({ setCreatedCourse }: Props) => {
-  const [courseId, setCourseId] = useState('');
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
+  const [courseId, setCourseId] = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
   const [showToast, setShowToast] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   function handleCreate(): void {
     apiRequestService
       .sendRequest(
-        'http://localhost:3000/courses',
-        'POST',
+        "http://localhost:3000/courses",
+        "POST",
         {},
         {},
         {
@@ -28,17 +28,17 @@ const CreateCourseForm = ({ setCreatedCourse }: Props) => {
         }
       )
       .then((response) => {
-        setError('');
+        setError("");
         setCreatedCourse(response?.courseId);
         const modal = document.getElementById(
-          'content_confirmation_modal'
+          "content_confirmation_modal"
         ) as HTMLDialogElement;
         if (modal) {
           modal.showModal();
         }
       })
       .catch((error) => {
-        setError(error?.message || 'An error occurred');
+        setError(error?.message || "An error occurred");
       })
       .finally(() => {
         setShowToast(true);
@@ -46,19 +46,19 @@ const CreateCourseForm = ({ setCreatedCourse }: Props) => {
   }
 
   function handleCancel(): void {
-    setCourseId('');
-    setName('');
-    setPrice('');
-    setDescription('');
+    setCourseId("");
+    setName("");
+    setPrice("");
+    setDescription("");
   }
 
   return (
     <>
       {showToast && (
         <div className="toast toast-top toast-end">
-          <div className={`alert ${error ? 'alert-error' : 'alert-success'}`}>
+          <div className={`alert ${error ? "alert-error" : "alert-success"}`}>
             <span>
-              {error || 'Course created successfully'}
+              {error || "Course created successfully"}
               <button
                 className="bg-inherit pr-0 border-none cursor-pointer"
                 onClick={() => setShowToast(false)}

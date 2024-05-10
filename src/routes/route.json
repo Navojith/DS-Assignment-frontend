@@ -9,7 +9,10 @@
     "route": "/account"
   },
   "COURSE": {
-    "route": "/course"
+    "route": "/course",
+    "subRoutes": {
+      "courseId": ":courseId"
+    }
   },
   "MY_COURSES": {
     "route": "/my-courses"

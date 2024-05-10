@@ -19,7 +19,6 @@ interface Progression {
 function MyCourses() {
   const [courses, setCourses] = useState<Progression[]>([]);
   const navigate = useNavigate();
-  console.log(courses);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -67,9 +66,7 @@ function MyCourses() {
                 </p>
               </div>
               <div className="ml-auto mr-5">
-                <button className="bg-primaryLighter hover:bg-primaryDarker border-text">
-                  Go to Course
-                </button>
+                <button>Go to Course</button>
               </div>
             </div>
           );

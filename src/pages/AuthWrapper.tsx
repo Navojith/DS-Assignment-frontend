@@ -6,7 +6,7 @@ import Home from './home/Home';
 const AuthWrapper = () => {
   const { user, isLoading } = useAuthentication();
   const { pathname } = useLocation();
-  console.log(pathname);
+
   if (isLoading) {
     // return <PageLoadingAnimation />;
     return 'loading';

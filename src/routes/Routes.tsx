@@ -7,6 +7,7 @@ import Login from '../pages/auth/Login';
 import Home from '../pages/home/Home';
 import Course from '../pages/course/Course';
 import MyCourses from '../pages/myCourses/MyCourses';
+import IndividualCourse from '../pages/course/IndividualCourse/IndividualCourse';
 
 const AppRoutes = () => {
   const { user } = useAuthentication();
@@ -15,7 +16,13 @@ const AppRoutes = () => {
     <Routes>
       <Route path={ROOT.route} element={<AuthWrapper />}>
         <Route path={ACCOUNT.route} element={<Account />} />
-        <Route path={COURSE.route} element={<Course />} />
+        <Route path={COURSE.route}>
+          <Route
+            path={COURSE.subRoutes.courseId}
+            element={<IndividualCourse />}
+          />
+          <Route path={''} element={<Course />} />
+        </Route>
         <Route path={ROOT.route} element={<Home />} />
         <Route path={MY_COURSES.route} element={<MyCourses />} />
       </Route>

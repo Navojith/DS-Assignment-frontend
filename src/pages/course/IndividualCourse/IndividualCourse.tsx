@@ -25,7 +25,7 @@ interface CourseContent {
   step: number;
   content: any;
   _id: string;
-  type?: string;
+  contentType?: string;
 }
 
 export interface CompletedSteps {
@@ -63,6 +63,7 @@ function IndividualCourse() {
           ]);
           setCourse(course);
           setProgress(progress);
+
           if (steps) {
             const weeklyContent: WeeklyContent[] = [];
 
@@ -81,6 +82,7 @@ function IndividualCourse() {
                 }
               }
             });
+
             setSteps(weeklyContent);
           }
         } catch (error) {
@@ -144,10 +146,10 @@ function IndividualCourse() {
                 </div>
                 <div className="collapse-content flex flex-col gap-5">
                   {step.content.map((content) => (
-                    <>
-                      {content.type === 'image' ? (
+                    <div key={content._id}>
+                      {content.contentType === 'image' ? (
                         <img src={content.content} />
-                      ) : content.type === 'video' ? (
+                      ) : content.contentType === 'video' ? (
                         <video controls>
                           <source src={content.content} type="video/mp4" />
                         </video>
@@ -176,7 +178,7 @@ function IndividualCourse() {
                           ? 'Mark as Completed'
                           : 'Mark as not Completed'}
                       </button>
-                    </>
+                    </div>
                   ))}
                 </div>
               </div>

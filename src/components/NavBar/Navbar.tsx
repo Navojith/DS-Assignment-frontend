@@ -47,14 +47,6 @@ const Navbar = () => {
               >
                 Courses
               </Link>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
             </li>
             <li>
               <Link
@@ -79,17 +71,7 @@ const Navbar = () => {
             <Link to={'./'}>Home</Link>
           </li>
           <li>
-            <details>
-              <summary>Course</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
+            <Link to={routes.COURSE.route}>Courses</Link>
           </li>
           <li>
             <Link to={routes.MY_COURSES.route}>My Courses</Link>

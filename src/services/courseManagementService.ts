@@ -117,3 +117,31 @@ export const deleteContent = (
     console.error(err);
   }
 };
+
+export const approveContent = (id: string, step: string) => {
+  try {
+    const response = apiRequestService.sendRequest(
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/course-content/approve/${id}/${step}`,
+      'patch'
+    );
+    if (response) {
+      return response;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const rejectContent = (id: string, step: string) => {
+  try {
+    const response = apiRequestService.sendRequest(
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/course-content/reject/${id}/${step}`,
+      'patch'
+    );
+    if (response) {
+      return response;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};

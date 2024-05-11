@@ -1,14 +1,14 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
-import Login from "../pages/Auth/Login";
+import Login from "../pages/auth/Login";
 import AuthWrapper from "../pages/AuthWrapper";
 import Home from "../pages/Home/Home";
-import Account from "../pages/Profile/Account";
+import Account from "../pages/profile/Account";
 import AddCourseContent from "../pages/addCourseContent/[id]";
 import Course from "../pages/course/Course";
 import CreateCourse from "../pages/createCourse/CreateCourse";
 import MyCourses from "../pages/myCourses/MyCourses";
-import SignUp from "../pages/Auth/Signup";
+import SignUp from "../pages/auth/Signup";
 import {
   ACCOUNT,
   ADD_COURSE_CONTENT,

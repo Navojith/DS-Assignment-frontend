@@ -1,6 +1,3 @@
-import React from "react";
-import PageContainer from "../../components/PageContainer/PageContainer";
-import logo from "../../assets/e-learning/logo.svg";
 import background from "../../assets/e-learning/background.png";
 import mobile from "../../assets/e-learning/mobileback.png";
 import { Link } from "react-router-dom";

@@ -45,12 +45,12 @@ const CustomSelect = ({
           </div>
         </div>
       )}
-      <label className="form-control w-full max-w-xs text-slate-700">
-        <div className="label text-white">
+      <label className="form-control w-full max-w-xs ">
+        <div className="label">
           <span className="label-text text-lg">{prompt}</span>
         </div>
         <select
-          className="select select-bordered select-secondary"
+          className="select select-bordered bg-primaryDarker"
           onChange={handleChange}
           value={selectedOption}
         >

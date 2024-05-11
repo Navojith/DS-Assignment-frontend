@@ -1,25 +1,27 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import { useAuthentication } from "../hooks/useAuthentication";
-import Login from "../pages/auth/Login";
-import AuthWrapper from "../pages/AuthWrapper";
-import Home from "../pages/home/Home";
-import Account from "../pages/profile/Account";
-import Course from "../pages/course/Course";
-import IndividualCourse from "../pages/course/IndividualCourse/IndividualCourse";
-import CourseContent from "../pages/courseContent/[id]";
-import CreateCourse from "../pages/createCourse/CreateCourse";
-import MyCourses from "../pages/myCourses/MyCourses";
+import { Route, Routes } from 'react-router-dom';
+import { useAuthentication } from '../hooks/useAuthentication';
+import AuthWrapper from '../pages/AuthWrapper';
+import Login from '../pages/auth/Login';
+import SignUp from '../pages/auth/Signup';
+import Course from '../pages/course/Course';
+import IndividualCourse from '../pages/course/IndividualCourse/IndividualCourse';
+import CourseContent from '../pages/courseContent/[id]';
+import CreateCourse from '../pages/createCourse/CreateCourse';
+import Home from '../pages/home/Home';
+import EditCourse from '../pages/manageCourse/[id]';
+import MyCourses from '../pages/myCourses/MyCourses';
+import Account from '../pages/profile/Account';
 import {
   ACCOUNT,
-  ADD_COURSE_CONTENT,
   COURSE,
+  COURSE_CONTENT,
   CREATE_COURSE,
+  EDIT_COURSE,
   LOGIN,
   MY_COURSES,
   ROOT,
   SIGNUP,
-} from "./route.json";
-import SignUp from "../pages/auth/Signup";
+} from './route.json';
 
 const AppRoutes = () => {
   const { user } = useAuthentication();
@@ -33,12 +35,13 @@ const AppRoutes = () => {
             path={COURSE.subRoutes.courseId}
             element={<IndividualCourse />}
           />
-          <Route path={""} element={<Course />} />
+          <Route path={''} element={<Course />} />
         </Route>
         <Route path={ROOT.route} element={<Home />} />
         <Route path={MY_COURSES.route} element={<MyCourses />} />
         <Route path={CREATE_COURSE.route} element={<CreateCourse />} />
-        <Route path={ADD_COURSE_CONTENT.route} element={<CourseContent />} />
+        <Route path={COURSE_CONTENT.route} element={<CourseContent />} />
+        <Route path={EDIT_COURSE.route} element={<EditCourse />} />
       </Route>
       <Route
         path={LOGIN.route}

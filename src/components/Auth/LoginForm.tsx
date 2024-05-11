@@ -1,7 +1,35 @@
 import learning from "../../assets/learning.png";
 import google from "../../assets/google.png";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const LogInForm = () => {
+  const [isLoggedin, setIsLoggedin] = useState(false);
+
+  const handleClick = () => {
+    const callbackUrl = "http://localhost:5173/";
+    const clientId =
+      "53102066216-p7u35iam0hptu5d80l75t8pvv80bmte0.apps.googleusercontent.com";
+    const targetUrl = `https://accounts.google.com/o/oauth2/auth?redirect_uri=${encodeURIComponent(
+      callbackUrl
+    )}&response_type=token&client_id=${clientId}&scope=openid%20email%20profile`;
+    console.log("targetUrl", targetUrl);
+    window.location.href = targetUrl;
+  };
+
+  useEffect(() => {
+    const accessTokenRegex = /access_token=([^&]*)/;
+    console.log("useEffect");
+    const isMatch = window.location.href.match(accessTokenRegex);
+    console.log(isMatch);
+
+    if (isMatch) {
+      const accessToken = isMatch[1];
+      Cookies.set("access_token", accessToken);
+      setIsLoggedin(true);
+    }
+  }, []);
+
   return (
     <>
       <div>
@@ -26,7 +54,7 @@ const LogInForm = () => {
 
           <div className="grid grid-cols-1 gap-4">
             {/* <button className="btn btn-primary">Log In</button> */}
-            <button className="btn btn-google">
+            <button className="btn btn-google" onClick={handleClick}>
               {" "}
               <img src={google} className="w-5 h-5"></img>Continue with Google
             </button>
@@ -38,3 +66,6 @@ const LogInForm = () => {
 };
 
 export default LogInForm;
+function setIsLoggedin(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}

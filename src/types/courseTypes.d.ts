@@ -4,3 +4,9 @@ export interface CourseDTO {
   price: string;
   description?: string;
 }
+export interface CourseContentDTO {
+  courseId: string;
+  step: string;
+  content: string;
+  contentType: string;
+}

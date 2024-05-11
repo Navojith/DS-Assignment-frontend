@@ -17,7 +17,7 @@ const SignUpForm = () => {
 
           <div className="grid grid-cols-1 gap-4">
             {/* <button className="btn btn-primary">Log In</button> */}
-            <button className="btn btn-google border-none">
+            <button className="btn btn-google">
               {" "}
               <img src={google} className="w-5 h-5"></img>Continue with Google
             </button>
@@ -25,7 +25,10 @@ const SignUpForm = () => {
           <div className="text-center">
             <h1 className="text-violet-50 text-lg ">
               already have an account?{" "}
-              <a href="#" className="text-violet-50 text-xl font-bold">
+              <a
+                href="#"
+                className="text-violet-50 text-xl font-bold hover:text-violet-200"
+              >
                 Sign in
               </a>
             </h1>

@@ -96,7 +96,7 @@ const CreateCourseForm = ({ setCreatedCourse }: Props) => {
               />
             </label>
             <label className="input input-secondary flex items-center gap-2">
-              Price $
+              <div className="flex flex-shrink-0">Price $</div>
               <input
                 type="number"
                 className="grow"

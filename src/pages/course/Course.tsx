@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import PageContainer from '../../components/PageContainer/PageContainer';
-import { Course as CourseType } from './IndividualCourse/IndividualCourse';
-import { getAllCourses } from '../../services/courseManagementService';
-import { getMyCoursesWithProgression } from '../../services/progressionService';
-import { useAuthentication } from '../../hooks/useAuthentication';
 import { useNavigate } from 'react-router-dom';
+import PageContainer from '../../components/PageContainer/PageContainer';
+import { useAuthentication } from '../../hooks/useAuthentication';
 import routes from '../../routes/route.json';
-import { Progression } from '../myCourses/MyCourses';
+import { getAllCourses } from '../../services/courseManagementService';
 import { createPayment } from '../../services/paymentService';
-
+import { getMyCoursesWithProgression } from '../../services/progressionService';
+import { Progression } from '../myCourses/MyCourses';
+import { Course as CourseType } from './IndividualCourse/IndividualCourse';
 
 function Course() {
   const [courses, setCourses] = useState<CourseType[]>([]);
@@ -48,19 +47,17 @@ function Course() {
     setFilteredCourses(filteredCourses);
   }, [search]);
 
-  const handleEnroll =  async (courseId: string) => {
+  const handleEnroll = async (courseId: string) => {
     console.log('Enrolling to course', courseId);
     try {
-      const response = await createPayment(
-        {
-          amount: 50.99,
-          status: "completed",
-          paymentMethod: "credit_card",
-          paymentId: courseId,
-          userId: "user123",
-          courseId: courseId
-        }
-      );
+      const response = await createPayment({
+        amount: 50.99,
+        status: 'completed',
+        paymentMethod: 'credit_card',
+        paymentId: courseId,
+        userId: 'user123',
+        courseId: courseId,
+      });
       if (response) {
         console.log('Payment successful', response);
         window.location.replace(response.session.url);
@@ -71,20 +68,41 @@ function Course() {
   };
 
   const RenderButton = (courseId: string) => {
-    const ownedCourseIds: string[] = ownedCourses.map(
-      (course) => course.courseDetails.courseId
-    );
+    const ownedCourseIds: string[] =
+      ownedCourses &&
+      Array.isArray(ownedCourses) &&
+      ownedCourses?.map((course) => course.courseDetails.courseId);
 
-    return ownedCourseIds.includes(courseId) ? (
+    return ownedCourses &&
+      Array.isArray(ownedCourses) &&
+      ownedCourseIds.includes(courseId) ? (
       <button
         className="ml-auto"
         onClick={() => navigate(`${routes.COURSE.route}/${courseId}`)}
       >
         View Course
       </button>
-    ) : (
+    ) : user?.role === 'student' ? (
       <button className="ml-auto" onClick={() => handleEnroll(courseId)}>
         Enroll Now
+      </button>
+    ) : user?.role === 'instructor' ? (
+      <button
+        className="ml-auto"
+        onClick={() =>
+          navigate(routes?.EDIT_COURSE?.route?.replace(':id', courseId))
+        }
+      >
+        Manage Course
+      </button>
+    ) : (
+      <button
+        className="ml-auto"
+        onClick={() => {
+          navigate(routes?.COURSE_CONTENT?.route?.replace(':id', courseId));
+        }}
+      >
+        Evaluate Content
       </button>
     );
   };
@@ -114,7 +132,9 @@ function Course() {
           </svg>
         </label>
         <div className="mt-10 flex flex-col gap-5">
-        {filteredCourses && Array.isArray(filteredCourses) && filteredCourses.map((course) => {
+          {filteredCourses &&
+            Array.isArray(filteredCourses) &&
+            filteredCourses.map((course) => {
               return (
                 <div
                   key={course._id}

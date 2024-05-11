@@ -9,4 +9,5 @@ export interface CourseContentDTO {
   step: string;
   content: string;
   contentType: string;
+  isApproved?: boolean;
 }

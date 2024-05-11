@@ -1,46 +1,46 @@
-import { useState } from 'react';
-import { createCourse } from '../../services/courseManagementService';
-import { CourseDTO } from '../../types/courseTypes';
+import { useState } from "react";
+import { createCourse } from "../../services/courseManagementService";
+import { CourseDTO } from "../../types/courseTypes";
 
 interface Props {
   setCreatedCourse: (courseID: string) => void;
 }
 
 const CreateCourseForm = ({ setCreatedCourse }: Props) => {
-  const [courseId, setCourseId] = useState('');
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
+  const [courseId, setCourseId] = useState("");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
   const [showToast, setShowToast] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   function handleCreate(): void {
     if (!courseId || !name || !price) {
-      setError('Please fill all the required fields');
+      setError("Please fill all the required fields");
       setShowToast(true);
       return;
     }
 
     const course: CourseDTO = {
-      courseId: courseId || '',
-      name: name || '',
-      price: price || '',
-      description: description || '',
+      courseId: courseId || "",
+      name: name || "",
+      price: price || "",
+      description: description || "",
     };
 
     createCourse(course)
       .then((response) => {
-        setError('');
+        setError("");
         setCreatedCourse(response?.courseId);
         const modal = document.getElementById(
-          'content_confirmation_modal'
+          "content_confirmation_modal"
         ) as HTMLDialogElement;
         if (modal) {
           modal.showModal();
         }
       })
       .catch((error) => {
-        setError(error?.message || 'An error occurred');
+        setError(error?.message || "An error occurred");
       })
       .finally(() => {
         setShowToast(true);
@@ -48,19 +48,19 @@ const CreateCourseForm = ({ setCreatedCourse }: Props) => {
   }
 
   function handleCancel(): void {
-    setCourseId('');
-    setName('');
-    setPrice('');
-    setDescription('');
+    setCourseId("");
+    setName("");
+    setPrice("");
+    setDescription("");
   }
 
   return (
     <>
       {showToast && (
         <div className="toast toast-top toast-end">
-          <div className={`alert ${error ? 'alert-error' : 'alert-success'}`}>
+          <div className={`alert ${error ? "alert-error" : "alert-success"}`}>
             <span>
-              {error || 'Course created successfully'}
+              {error || "Course created successfully"}
               <button
                 className="bg-inherit pr-0 border-none cursor-pointer"
                 onClick={() => setShowToast(false)}

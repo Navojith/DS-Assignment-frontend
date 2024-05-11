@@ -1,4 +1,4 @@
-import PageContainer from '../../components/PageContainer/PageContainer';
+import PageContainer from "../../components/PageContainer/PageContainer";
 
 const Home = () => {
   return (

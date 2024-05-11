@@ -3,9 +3,10 @@ import PageContainer from '../../components/PageContainer/PageContainer';
 import { getMyCoursesWithProgression } from '../../services/progressionService';
 import { useNavigate } from 'react-router-dom';
 import { COURSE } from '../../routes/route.json';
+import { CompletedSteps } from '../course/IndividualCourse/IndividualCourse';
 
-interface Progression {
-  completedSteps: number;
+export interface Progression {
+  completedSteps: CompletedSteps;
   totalSteps: number;
   userId: string;
   id: string;
@@ -35,6 +36,20 @@ function MyCourses() {
     };
     fetchCourses();
   }, []);
+
+  const calcProgress = (completedSteps: CompletedSteps, totalSteps: number) => {
+    if (totalSteps > 0) {
+      const completedStepsCount = Object.values(completedSteps).reduce(
+        (count, value) => {
+          return count + (value === 1 ? 1 : 0);
+        },
+        0
+      );
+      return Math.round((completedStepsCount / totalSteps) * 100);
+    } else {
+      return 0;
+    }
+  };
   return (
     <PageContainer>
       <h2 className="text-3xl font-bold">My Courses</h2>
@@ -56,13 +71,10 @@ function MyCourses() {
                 </h3>
                 <p>{course.courseDetails.description}</p>
                 <p>
-                  Progress:{' '}
-                  {course.totalSteps > 0
-                    ? Math.round(
-                        (course.completedSteps / course.totalSteps) * 100
-                      )
-                    : 0}
-                  %
+                  {`Progress: ${calcProgress(
+                    course.completedSteps,
+                    course.totalSteps
+                  )}%`}
                 </p>
               </div>
               <div className="ml-auto mr-5">

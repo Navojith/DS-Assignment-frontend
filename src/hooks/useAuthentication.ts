@@ -14,7 +14,7 @@ export const useAuthentication = () => {
   useEffect(() => {
     setIsLoading(true);
     setUser({
-      id: '123',
+      id: '6630b0f269c099f21afc289d',
       email: 'example@example.com',
       name: 'Example',
       avatar: 'https://example.com/avatar.png',

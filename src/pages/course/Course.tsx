@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import routes from '../../routes/route.json';
 import { Progression } from '../myCourses/MyCourses';
 import { createPayment } from '../../services/paymentService';
+import { v4 as uuidv4 } from 'uuid';
 
 
 function Course() {
@@ -51,12 +52,13 @@ function Course() {
   const handleEnroll =  async (courseId: string) => {
     console.log('Enrolling to course', courseId);
     try {
+      const paymentId = uuidv4(); 
       const response = await createPayment(
         {
           amount: 50.99,
           status: "completed",
           paymentMethod: "credit_card",
-          paymentId: courseId,
+          paymentId: paymentId,
           userId: "user123",
           courseId: courseId
         }

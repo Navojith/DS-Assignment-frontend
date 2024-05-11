@@ -7,6 +7,7 @@ import Account from '../pages/profile/Account';
 import AddCourseContent from '../pages/addCourseContent/[id]';
 import Course from '../pages/course/Course';
 import IndividualCourse from '../pages/course/IndividualCourse/IndividualCourse';
+import CourseContent from '../pages/courseContent/[id]';
 import CreateCourse from '../pages/createCourse/CreateCourse';
 import MyCourses from '../pages/myCourses/MyCourses';
 import {
@@ -36,7 +37,7 @@ const AppRoutes = () => {
         <Route path={ROOT.route} element={<Home />} />
         <Route path={MY_COURSES.route} element={<MyCourses />} />
         <Route path={CREATE_COURSE.route} element={<CreateCourse />} />
-        <Route path={ADD_COURSE_CONTENT.route} element={<AddCourseContent />} />
+        <Route path={ADD_COURSE_CONTENT.route} element={<CourseContent />} />
       </Route>
       <Route
         path={LOGIN.route}

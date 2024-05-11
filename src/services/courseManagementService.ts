@@ -1,4 +1,4 @@
-import { CourseDTO } from '../types/courseTypes';
+import { CourseContentDTO, CourseDTO } from '../types/courseTypes';
 import apiRequestService from './apiRequestService';
 
 const COURSE_MANAGEMENT_SERVICE_BASE_URL = import.meta.env
@@ -74,6 +74,86 @@ export const createCourse = (course: CourseDTO) => {
       course
     );
     return response;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const createContent = (content: CourseContentDTO) => {
+  try {
+    const response = apiRequestService.sendRequest(
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/course-content`,
+      'post',
+      {},
+      {},
+      content
+    );
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const updateContent = (content: CourseContentDTO) => {
+  try {
+    const response = apiRequestService.sendRequest(
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/course-content/${content.courseId}/${content.step}`,
+      'patch',
+      {},
+      { contentType: content.contentType },
+      content
+    );
+    if (response) {
+      return response;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const deleteContent = (
+  id: string,
+  step: string,
+  contentType: string
+) => {
+  try {
+    const response = apiRequestService.sendRequest(
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/course-content/${id}/${step}`,
+      'delete',
+      {},
+      { contentType }
+    );
+    if (response) {
+      return response;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const approveContent = (id: string, step: string) => {
+  try {
+    const response = apiRequestService.sendRequest(
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/course-content/approve/${id}/${step}`,
+      'patch'
+    );
+    if (response) {
+      return response;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const rejectContent = (id: string, step: string) => {
+  try {
+    const response = apiRequestService.sendRequest(
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/course-content/reject/${id}/${step}`,
+      'patch'
+    );
+    if (response) {
+      return response;
+    }
   } catch (err) {
     console.error(err);
   }

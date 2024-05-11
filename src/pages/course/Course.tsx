@@ -5,9 +5,11 @@ import { useAuthentication } from '../../hooks/useAuthentication';
 import routes from '../../routes/route.json';
 import { getAllCourses } from '../../services/courseManagementService';
 import { createPayment } from '../../services/paymentService';
+import { v4 as uuidv4 } from 'uuid';
 import { getMyCoursesWithProgression } from '../../services/progressionService';
 import { Progression } from '../myCourses/MyCourses';
 import { Course as CourseType } from './IndividualCourse/IndividualCourse';
+
 
 function Course() {
   const [courses, setCourses] = useState<CourseType[]>([]);
@@ -50,14 +52,18 @@ function Course() {
   const handleEnroll = async (courseId: string) => {
     console.log('Enrolling to course', courseId);
     try {
-      const response = await createPayment({
-        amount: 50.99,
-        status: 'completed',
-        paymentMethod: 'credit_card',
-        paymentId: courseId,
-        userId: 'user123',
-        courseId: courseId,
-      });
+
+      const paymentId = uuidv4(); 
+      const response = await createPayment(
+        {
+          amount: 50.99,
+          status: "completed",
+          paymentMethod: "credit_card",
+          paymentId: paymentId,
+          userId: "user123",
+          courseId: courseId
+        }
+      );
       if (response) {
         console.log('Payment successful', response);
         window.location.replace(response.session.url);

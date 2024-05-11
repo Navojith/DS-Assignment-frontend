@@ -7,6 +7,8 @@ import { useAuthentication } from '../../hooks/useAuthentication';
 import { useNavigate } from 'react-router-dom';
 import routes from '../../routes/route.json';
 import { Progression } from '../myCourses/MyCourses';
+import { createPayment } from '../../services/paymentService';
+
 
 function Course() {
   const [courses, setCourses] = useState<CourseType[]>([]);
@@ -46,8 +48,26 @@ function Course() {
     setFilteredCourses(filteredCourses);
   }, [search]);
 
-  const handleEnroll = (courseId: string) => {
+  const handleEnroll =  async (courseId: string) => {
     console.log('Enrolling to course', courseId);
+    try {
+      const response = await createPayment(
+        {
+          amount: 50.99,
+          status: "completed",
+          paymentMethod: "credit_card",
+          paymentId: courseId,
+          userId: "user123",
+          courseId: courseId
+        }
+      );
+      if (response) {
+        console.log('Payment successful', response);
+        window.location.replace(response.session.url);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const RenderButton = (courseId: string) => {
@@ -94,8 +114,7 @@ function Course() {
           </svg>
         </label>
         <div className="mt-10 flex flex-col gap-5">
-          {filteredCourses &&
-            filteredCourses?.map((course) => {
+        {filteredCourses && Array.isArray(filteredCourses) && filteredCourses.map((course) => {
               return (
                 <div
                   key={course._id}

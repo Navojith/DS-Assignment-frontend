@@ -4,6 +4,7 @@ import { getMyCoursesWithProgression } from '../../services/progressionService';
 import { useNavigate } from 'react-router-dom';
 import { COURSE } from '../../routes/route.json';
 import { CompletedSteps } from '../course/IndividualCourse/IndividualCourse';
+import { useAuthentication } from '../../hooks/useAuthentication';
 
 export interface Progression {
   completedSteps: CompletedSteps;
@@ -19,23 +20,24 @@ export interface Progression {
 
 function MyCourses() {
   const [courses, setCourses] = useState<Progression[]>([]);
+  const { user } = useAuthentication();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCourses = async () => {
-      try {
-        const response = await getMyCoursesWithProgression(
-          '6630b0f269c099f21afc289d'
-        );
-        if (response) {
-          setCourses(response);
+      if (user?.id) {
+        try {
+          const response = await getMyCoursesWithProgression(user?.id);
+          if (response) {
+            setCourses(response);
+          }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
       }
     };
     fetchCourses();
-  }, []);
+  }, [user?.id]);
 
   const calcProgress = (completedSteps: CompletedSteps, totalSteps: number) => {
     if (totalSteps > 0) {

@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import routes from "../../routes/route.json";
 
 const Navbar = () => {
+  const location = useLocation();
+
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-primaryLighter border-b-2 border-b-secondary">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -24,24 +26,37 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-primaryLighter rounded-box w-52"
           >
             <li>
-              <Link to={"/"}>Home</Link>
+              <Link
+                to={"/"}
+                className={
+                  location.pathname === "/" ? "text-secondary" : "text-text"
+                }
+              >
+                Home
+              </Link>
             </li>
             <li>
-              <Link to={routes.COURSE.route}>Courses</Link>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
+              <Link
+                to={routes.COURSE.route}
+                className={
+                  location.pathname === "" ? "text-secondary" : "text-text"
+                }
+              >
+                Courses
+              </Link>
             </li>
             <li>
-              <Link to={routes.MY_COURSES.route}>My Courses</Link>
+              <Link
+                to={routes.MY_COURSES.route}
+                className={
+                  location.pathname === "" ? "text-secondary" : "text-text"
+                }
+              >
+                My Courses
+              </Link>
             </li>
           </ul>
         </div>
@@ -51,22 +66,12 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1 bg-primaryLighter">
           <li>
             <Link to={"./"}>Home</Link>
           </li>
           <li>
-            <details>
-              <summary>Course</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
+            <Link to={routes.COURSE.route}>Courses</Link>
           </li>
           <li>
             <Link to={routes.MY_COURSES.route}>My Courses</Link>

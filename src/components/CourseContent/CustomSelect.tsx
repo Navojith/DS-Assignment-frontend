@@ -19,7 +19,7 @@ const CustomSelect = ({
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (
       sequential &&
-      parseInt(selectedOption) - parseInt(e.target.value) <= 1
+      parseInt(selectedOption) - parseInt(e.target.value) < -1
     ) {
       setShowToast(true);
       return;
@@ -45,12 +45,12 @@ const CustomSelect = ({
           </div>
         </div>
       )}
-      <label className="form-control w-full max-w-xs">
-        <div className="label">
-          <span className="label-text">{prompt}</span>
+      <label className="form-control w-full max-w-xs text-slate-700">
+        <div className="label text-white">
+          <span className="label-text text-lg">{prompt}</span>
         </div>
         <select
-          className="select select-bordered"
+          className="select select-bordered select-secondary"
           onChange={handleChange}
           value={selectedOption}
         >

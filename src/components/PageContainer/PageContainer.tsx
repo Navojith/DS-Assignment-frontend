@@ -13,10 +13,10 @@ const PageContainer = ({
 }: Props) => {
   return (
     <div
-      className={`container mx-auto pt-10 ${
+      className={`mx-[10%] sm:mx-[10%] md:mx-[15%] lg:mx-[20%] pt-14 ${
         justifyContentCenter ? "flex justify-center" : ""
       } ${alignItemsCenter ? "flex items-center" : ""}`}
-      style={{ minHeight: fullHeight ? "calc(100vh - 68px)" : "" }}
+      style={{ minHeight: fullHeight ? "calc(100vh - 70px)" : "" }}
     >
       {children}
     </div>

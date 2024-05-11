@@ -12,7 +12,10 @@
     "route": "/account"
   },
   "COURSE": {
-    "route": "/course"
+    "route": "/course",
+    "subRoutes": {
+      "courseId": ":courseId"
+    }
   },
   "MY_COURSES": {
     "route": "/my-courses"
@@ -21,6 +24,6 @@
     "route": "/create-course"
   },
   "ADD_COURSE_CONTENT": {
-    "route": "/add-course-content/:id"
+    "route": "/course-content/:id"
   }
 }

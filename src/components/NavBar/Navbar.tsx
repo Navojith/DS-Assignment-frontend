@@ -83,11 +83,6 @@ const Navbar = () => {
           LogIn
         </Link>
       </div>
-      <div className="navbar-end">
-        <Link to={routes.SIGNUP.route} className="btn">
-          SignUp
-        </Link>
-      </div>
     </div>
   );
 };

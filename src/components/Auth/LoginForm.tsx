@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 const LogInForm = () => {
-  const [isLoggedin, setIsLoggedin] = useState(false);
-
   const handleClick = () => {
     const callbackUrl = "http://localhost:5173/";
     const clientId =
@@ -16,19 +14,6 @@ const LogInForm = () => {
     console.log("targetUrl", targetUrl);
     window.location.href = targetUrl;
   };
-
-  useEffect(() => {
-    const accessTokenRegex = /access_token=([^&]*)/;
-    console.log("useEffect");
-    const isMatch = window.location.href.match(accessTokenRegex);
-    console.log(isMatch);
-
-    if (isMatch) {
-      const accessToken = isMatch[1];
-      Cookies.set("access_token", accessToken);
-      setIsLoggedin(true);
-    }
-  }, []);
 
   return (
     <>
@@ -66,6 +51,3 @@ const LogInForm = () => {
 };
 
 export default LogInForm;
-function setIsLoggedin(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}

@@ -18,6 +18,10 @@ const UserAccount = () => {
     //add code here
   };
 
+  const handleLogOut = () => {
+    //add code here
+  };
+
   return (
     <>
       <div className="flex flex-row mt-5">
@@ -148,7 +152,10 @@ const UserAccount = () => {
         </div>
         <div className="w-1/4">
           <div className="flex flex-col items-center">
-            <button className="btn hover:btn-secondary w-4/6 -ms-10">
+            <button
+              className="btn hover:btn-secondary w-4/6 -ms-10"
+              onClick={handleLogOut}
+            >
               Logout
             </button>
             <img src={virtualClass} className="p-10 mr-10"></img>

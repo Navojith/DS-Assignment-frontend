@@ -17,9 +17,7 @@ import {
   LOGIN,
   MY_COURSES,
   ROOT,
-  SIGNUP,
 } from "./route.json";
-import SignUp from "../pages/auth/Signup";
 
 const AppRoutes = () => {
   const { user } = useAuthentication();
@@ -44,11 +42,6 @@ const AppRoutes = () => {
         path={LOGIN.route}
         // element={user ? <Navigate to={ROOT.route} replace /> : <Login />}
         element={<Login />}
-      />
-      <Route
-        path={SIGNUP.route}
-        // element={user ? <Navigate to={ROOT.route} replace /> : <Login />}
-        element={<SignUp />}
       />
     </Routes>
   );

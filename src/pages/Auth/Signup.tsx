@@ -1,12 +1,12 @@
-import LogInForm from "../../components/Auth/LoginForm";
+import SignUpForm from "../../components/Auth/SignupForm";
 import PageContainer from "../../components/PageContainer/PageContainer";
 
-const Login = () => {
+const SignUp = () => {
   return (
     <PageContainer justifyContentCenter={true} alignItemsCenter={true}>
-      <LogInForm />
+      <SignUpForm />
     </PageContainer>
   );
 };
 
-export default Login;
+export default SignUp;

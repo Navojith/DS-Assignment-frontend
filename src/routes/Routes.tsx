@@ -1,15 +1,14 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { useAuthentication } from '../hooks/useAuthentication';
-import Login from '../pages/Auth/Login';
-import AuthWrapper from '../pages/AuthWrapper';
-import Home from '../pages/Home/Home';
-import Account from '../pages/Profile/Account';
-import AddCourseContent from '../pages/addCourseContent/[id]';
-import Course from '../pages/course/Course';
-import IndividualCourse from '../pages/course/IndividualCourse/IndividualCourse';
-import CourseContent from '../pages/courseContent/[id]';
-import CreateCourse from '../pages/createCourse/CreateCourse';
-import MyCourses from '../pages/myCourses/MyCourses';
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useAuthentication } from "../hooks/useAuthentication";
+import Login from "../pages/auth/Login";
+import AuthWrapper from "../pages/AuthWrapper";
+import Home from "../pages/home/Home";
+import Account from "../pages/profile/Account";
+import Course from "../pages/course/Course";
+import IndividualCourse from "../pages/course/IndividualCourse/IndividualCourse";
+import CourseContent from "../pages/courseContent/[id]";
+import CreateCourse from "../pages/createCourse/CreateCourse";
+import MyCourses from "../pages/myCourses/MyCourses";
 import {
   ACCOUNT,
   ADD_COURSE_CONTENT,
@@ -18,7 +17,9 @@ import {
   LOGIN,
   MY_COURSES,
   ROOT,
-} from './route.json';
+  SIGNUP,
+} from "./route.json";
+import SignUp from "../pages/auth/Signup";
 
 const AppRoutes = () => {
   const { user } = useAuthentication();
@@ -32,7 +33,7 @@ const AppRoutes = () => {
             path={COURSE.subRoutes.courseId}
             element={<IndividualCourse />}
           />
-          <Route path={''} element={<Course />} />
+          <Route path={""} element={<Course />} />
         </Route>
         <Route path={ROOT.route} element={<Home />} />
         <Route path={MY_COURSES.route} element={<MyCourses />} />
@@ -41,7 +42,13 @@ const AppRoutes = () => {
       </Route>
       <Route
         path={LOGIN.route}
-        element={user ? <Navigate to={ROOT.route} replace /> : <Login />}
+        // element={user ? <Navigate to={ROOT.route} replace /> : <Login />}
+        element={<Login />}
+      />
+      <Route
+        path={SIGNUP.route}
+        // element={user ? <Navigate to={ROOT.route} replace /> : <Login />}
+        element={<SignUp />}
       />
     </Routes>
   );

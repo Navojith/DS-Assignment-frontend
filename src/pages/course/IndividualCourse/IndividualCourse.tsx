@@ -11,6 +11,7 @@ import {
   updateSteps,
 } from '../../../services/progressionService';
 import { Progression } from '../../myCourses/MyCourses';
+import ReactHtmlParser from 'react-html-parser';
 
 export interface Course {
   _id: string;
@@ -148,14 +149,14 @@ function IndividualCourse() {
                 <div className="collapse-content flex flex-col gap-5">
                   {step.content.map((content) => (
                     <div key={content._id}>
-                      {content.contentType === 'image' ? (
+                      {content.contentType.toLowerCase() === 'image' ? (
                         <img src={content.content} />
-                      ) : content.contentType === 'video' ? (
+                      ) : content.contentType.toLowerCase() === 'video' ? (
                         <video controls>
                           <source src={content.content} type="video/mp4" />
                         </video>
                       ) : (
-                        <p>{content.content}</p>
+                        <>{ReactHtmlParser(content.content)}</>
                       )}
                       <button
                         className={

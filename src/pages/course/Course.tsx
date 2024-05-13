@@ -46,7 +46,7 @@ function Course() {
 
   useEffect(() => {
     const filteredCourses = courses.filter((course) =>
-      course.name.toLowerCase().includes(search.toLowerCase())
+      course?.name?.toLowerCase().includes(search.toLowerCase())
     );
     setFilteredCourses(filteredCourses);
   }, [search]);
@@ -68,7 +68,7 @@ function Course() {
         } catch (error) {
           console.error(error);
         }
-        window.location.replace(response.session.url);
+        window?.location?.replace(response.session.url);
       }
     } catch (error) {
       console.error(error);
@@ -142,21 +142,21 @@ function Course() {
         <div className="mt-10 flex flex-col gap-5">
           {filteredCourses &&
             Array.isArray(filteredCourses) &&
-            filteredCourses.map((course) => {
+            filteredCourses?.map((course) => {
               return (
                 <div
-                  key={course._id}
+                  key={course?._id}
                   className={
                     'border border-secondary bg-primaryLighter hover:bg-primaryDark p-3 md:px-10 md:py-5 rounded flex flex-row gap-2 items-center flex-wrap md:flex-nowrap'
                   }
                 >
                   <div className="flex flex-col gap-2 w-[100%] md:w-[75%]">
-                    <h3 className="text-xl font-bold">{course.name}</h3>
-                    <p>{course.description}</p>
-                    <p>{`Price : ${course.price} $`}</p>
+                    <h3 className="text-xl font-bold">{course?.name}</h3>
+                    <p>{course?.description}</p>
+                    <p>{`Price : ${course?.price} $`}</p>
                   </div>
                   <div className="flex w-[100%] md:w-[25%]">
-                    {RenderButton(course.courseId)}
+                    {RenderButton(course?.courseId)}
                   </div>
                 </div>
               );

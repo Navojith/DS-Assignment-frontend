@@ -21,7 +21,10 @@
   "CREATE_COURSE": {
     "route": "/create-course"
   },
-  "ADD_COURSE_CONTENT": {
+  "EDIT_COURSE": {
+    "route": "/edit-course/:id"
+  },
+  "COURSE_CONTENT": {
     "route": "/course-content/:id"
   }
 }

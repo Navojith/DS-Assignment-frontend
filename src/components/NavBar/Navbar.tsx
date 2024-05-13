@@ -1,5 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
-import routes from "../../routes/route.json";
+import { Link, useLocation } from 'react-router-dom';
+import routes from '../../routes/route.json';
 
 const Navbar = () => {
   const location = useLocation();
@@ -30,9 +30,9 @@ const Navbar = () => {
           >
             <li>
               <Link
-                to={"/"}
+                to={'/'}
                 className={
-                  location.pathname === "/" ? "text-secondary" : "text-text"
+                  location.pathname === '/' ? 'text-secondary' : 'text-text'
                 }
               >
                 Home
@@ -42,7 +42,7 @@ const Navbar = () => {
               <Link
                 to={routes.COURSE.route}
                 className={
-                  location.pathname === "" ? "text-secondary" : "text-text"
+                  location.pathname === '' ? 'text-secondary' : 'text-text'
                 }
               >
                 Courses
@@ -52,7 +52,7 @@ const Navbar = () => {
               <Link
                 to={routes.MY_COURSES.route}
                 className={
-                  location.pathname === "" ? "text-secondary" : "text-text"
+                  location.pathname === '' ? 'text-secondary' : 'text-text'
                 }
               >
                 My Courses
@@ -68,7 +68,7 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 bg-primaryLighter">
           <li>
-            <Link to={"./"}>Home</Link>
+            <Link to={'./'}>Home</Link>
           </li>
           <li>
             <Link to={routes.COURSE.route}>Courses</Link>

@@ -79,6 +79,33 @@ export const createCourse = (course: CourseDTO) => {
   }
 };
 
+export const updateCourse = (course: CourseDTO) => {
+  try {
+    const response = apiRequestService.sendRequest(
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/courses/${course.courseId}`,
+      'patch',
+      {},
+      {},
+      course
+    );
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const deleteCourse = (courseId: string) => {
+  try {
+    const response = apiRequestService.sendRequest(
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/courses/${courseId}`,
+      'delete'
+    );
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const createContent = (content: CourseContentDTO) => {
   try {
     const response = apiRequestService.sendRequest(

@@ -13,7 +13,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  /* color-scheme: light dark; */
   color: var(--text-color);
   background-color: var(--primaryDarker-color);
 
@@ -42,6 +42,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   box-sizing: border-box;
+  background-color: var(--primaryDarker-color);
+  color: var(--text-color);
 }
 
 h1 {
@@ -66,6 +68,10 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+input {
+  background-color: var(--primaryDarker-color);
 }
 
 @media (prefers-color-scheme: light) {

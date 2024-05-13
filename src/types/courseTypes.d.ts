@@ -10,4 +10,5 @@ export interface CourseContentDTO {
   content: string;
   contentType: string;
   isApproved?: boolean;
+  wasEvaluated?: boolean;
 }

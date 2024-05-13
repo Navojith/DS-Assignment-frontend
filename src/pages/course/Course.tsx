@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import PageContainer from '../../components/PageContainer/PageContainer';
-import { useAuthentication } from '../../hooks/useAuthentication';
-import routes from '../../routes/route.json';
-import { getAllCourses } from '../../services/courseManagementService';
-import { createPayment } from '../../services/paymentService';
-import { v4 as uuidv4 } from 'uuid';
-import { getMyCoursesWithProgression } from '../../services/progressionService';
-import { Progression } from '../myCourses/MyCourses';
 import { Course as CourseType } from './IndividualCourse/IndividualCourse';
-
+import { getAllCourses } from '../../services/courseManagementService';
+import {
+  enrollToCourse,
+  getMyCoursesWithProgression,
+} from '../../services/progressionService';
+import { useAuthentication } from '../../hooks/useAuthentication';
+import { useNavigate } from 'react-router-dom';
+import routes from '../../routes/route.json';
+import { createPayment } from '../../services/paymentService';
+import { v4 as uuid } from 'uuid';
+import { Progression } from '../myCourses/MyCourses';
 
 function Course() {
   const [courses, setCourses] = useState<CourseType[]>([]);
@@ -52,20 +54,20 @@ function Course() {
   const handleEnroll = async (courseId: string) => {
     console.log('Enrolling to course', courseId);
     try {
-
-      const paymentId = uuidv4(); 
-      const response = await createPayment(
-        {
-          amount: 50.99,
-          status: "completed",
-          paymentMethod: "credit_card",
-          paymentId: paymentId,
-          userId: "user123",
-          courseId: courseId
-        }
-      );
+      const response = await createPayment({
+        amount: 50.99,
+        status: 'completed',
+        paymentMethod: 'credit_card',
+        paymentId: uuid(),
+        userId: user?.id || '',
+        courseId: courseId,
+      });
       if (response) {
-        console.log('Payment successful', response);
+        try {
+          await enrollToCourse(user?.id, courseId);
+        } catch (error) {
+          console.error(error);
+        }
         window.location.replace(response.session.url);
       }
     } catch (error) {

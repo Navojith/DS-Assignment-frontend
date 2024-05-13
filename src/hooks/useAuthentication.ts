@@ -5,6 +5,7 @@ export interface User {
   email: string;
   name: string;
   avatar: string;
+  phone?: string;
   role: 'student' | 'instructor' | 'admin';
 }
 
@@ -16,9 +17,10 @@ export const useAuthentication = () => {
     setIsLoading(true);
     setUser({
       id: '664191c26d71d98b40c14326',
-      email: 'example@example.com',
+      email: 'navojith22@gmail.com',
       name: 'Example',
       role: 'student',
+      phone: '94713197055',
       avatar: 'https://example.com/avatar.png',
     });
     //setUser(null);

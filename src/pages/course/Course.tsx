@@ -64,7 +64,7 @@ function Course() {
       });
       if (response) {
         try {
-          await enrollToCourse(user?.id, courseId);
+          await enrollToCourse(user?.id, courseId, user?.email);
         } catch (error) {
           console.error(error);
         }

@@ -15,10 +15,10 @@ export const useAuthentication = () => {
   useEffect(() => {
     setIsLoading(true);
     setUser({
-      id: '6630b0f269c099f21afc289d',
+      id: '664191c26d71d98b40c14326',
       email: 'example@example.com',
       name: 'Example',
-      role: 'admin',
+      role: 'student',
       avatar: 'https://example.com/avatar.png',
     });
     //setUser(null);

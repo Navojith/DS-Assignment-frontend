@@ -9,9 +9,9 @@ import {
 import { useAuthentication } from '../../hooks/useAuthentication';
 import { useNavigate } from 'react-router-dom';
 import routes from '../../routes/route.json';
-import { Progression } from '../myCourses/MyCourses';
 import { createPayment } from '../../services/paymentService';
 import { v4 as uuid } from 'uuid';
+import { Progression } from '../myCourses/MyCourses';
 
 function Course() {
   const [courses, setCourses] = useState<CourseType[]>([]);
@@ -76,20 +76,41 @@ function Course() {
   };
 
   const RenderButton = (courseId: string) => {
-    const ownedCourseIds: string[] = ownedCourses.map(
-      (course) => course.courseDetails.courseId
-    );
+    const ownedCourseIds: string[] =
+      ownedCourses &&
+      Array.isArray(ownedCourses) &&
+      ownedCourses?.map((course) => course.courseDetails.courseId);
 
-    return ownedCourseIds.includes(courseId) ? (
+    return ownedCourses &&
+      Array.isArray(ownedCourses) &&
+      ownedCourseIds.includes(courseId) ? (
       <button
         className="ml-auto"
         onClick={() => navigate(`${routes.COURSE.route}/${courseId}`)}
       >
         View Course
       </button>
-    ) : (
+    ) : user?.role === 'student' ? (
       <button className="ml-auto" onClick={() => handleEnroll(courseId)}>
         Enroll Now
+      </button>
+    ) : user?.role === 'instructor' ? (
+      <button
+        className="ml-auto"
+        onClick={() =>
+          navigate(routes?.EDIT_COURSE?.route?.replace(':id', courseId))
+        }
+      >
+        Manage Course
+      </button>
+    ) : (
+      <button
+        className="ml-auto"
+        onClick={() => {
+          navigate(routes?.COURSE_CONTENT?.route?.replace(':id', courseId));
+        }}
+      >
+        Evaluate Content
       </button>
     );
   };

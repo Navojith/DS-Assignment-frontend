@@ -4,17 +4,21 @@ import { useParams } from 'react-router-dom';
 import CustomSelect from '../../components/CourseContent/CustomSelect';
 import PageContainer from '../../components/PageContainer/PageContainer';
 import storage from '../../firebaseConfig';
+import { useAuthentication } from '../../hooks/useAuthentication';
 import {
+  approveContent,
   createContent,
   deleteContent,
   getCourse,
   getCourseContentByStep,
+  rejectContent,
   updateContent,
 } from '../../services/courseManagementService';
 import { CourseContentDTO, CourseDTO } from '../../types/courseTypes';
 
 const Index = () => {
   const { id } = useParams();
+  const { user } = useAuthentication();
 
   const [courseData, setCourseData] = useState<CourseDTO | null>(null);
   const [courseContent, setCourseContent] = useState<CourseContentDTO[]>([]);
@@ -23,6 +27,7 @@ const Index = () => {
   const [selectedContentType, setSelectedContentType] =
     useState<string>('Text');
   const [content, setContent] = useState<string>('');
+  const [isApproved, setIsApproved] = useState<boolean>(false);
 
   const [file, setFile] = useState<File | undefined>(undefined);
   const [percent, setPercent] = useState(0);
@@ -102,6 +107,32 @@ const Index = () => {
     }, 1000);
   };
 
+  const handleApprove = () => {
+    setLoading(true);
+    approveContent(id, selectedChapter).then((response) => {
+      if (response) {
+        console.log('Content approved successfully');
+        setIsApproved(true);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
+    });
+  };
+
+  const handleReject = () => {
+    setLoading(true);
+    rejectContent(id, selectedChapter).then((response) => {
+      if (response) {
+        console.log('Content rejected successfully');
+        setIsApproved(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
+    });
+  };
+
   useEffect(() => {
     handleUpload();
   }, [file, handleUpload]);
@@ -138,6 +169,8 @@ const Index = () => {
       (content) => content.contentType === selectedContentType
     );
 
+    setIsApproved(selectedContentTypeData[0]?.isApproved || false);
+
     if (selectedContentTypeData.length > 0) {
       setPageType('UPDATE');
       setContent(selectedContentTypeData[0].content);
@@ -162,8 +195,17 @@ const Index = () => {
           <div className="skeleton h-2/3 w-full border-secondary border-2"></div>
         ) : (
           <div className="bg-primaryLighter p-5 rounded-md border-2 border-secondary h-fit flex flex-col justify-between">
-            <div className="text-2xl font-bold mb-5">
-              Course Content of {courseData?.name}
+            <div className="flex items-center gap-4">
+              <div className="text-2xl font-bold mb-5">
+                Course Content of {courseData?.name}
+              </div>
+              {isApproved ? (
+                <div className="badge badge-secondary badge-outline">
+                  Approved
+                </div>
+              ) : (
+                <div className="badge badge-error badge-outline">Rejected</div>
+              )}
             </div>
             <div className="flex gap-10 justify-center">
               <CustomSelect
@@ -177,10 +219,10 @@ const Index = () => {
                 setSelected={setSelectedContentType}
               />
             </div>
-            <div className="h-fit w-full flex flex-col items-center mt-5 justify-center gap-6 text-slate-700">
+            <div className="h-fit w-full flex flex-col items-center mt-5 justify-center gap-6">
               {selectedContentType === 'Text' ? (
                 <textarea
-                  className="textarea textarea-secondary w-full textarea-lg"
+                  className="textarea textarea-bordered bg-primaryDarker w-full textarea-lg"
                   placeholder="Description of the course"
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
@@ -194,7 +236,7 @@ const Index = () => {
                   {percent}%
                 </div>
               ) : content || percent == 100 ? (
-                <label className="input input-secondary flex items-center gap-2">
+                <label className="input input-bordered flex items-center gap-2 text-text bg-primaryDarker">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
@@ -213,11 +255,11 @@ const Index = () => {
                 </label>
               ) : (
                 <div>
-                  <div className="grid h-20 card bg-base-300 rounded-box place-items-center">
+                  <div className="grid h-20 card rounded-box place-items-center">
                     <input
                       type="text"
                       placeholder="Enter your URL here"
-                      className="input input-bordered input-secondary w-full max-w-xs"
+                      className="input input-bordered bg-primaryDarker w-full max-w-xs"
                       value={content}
                       onChange={(e) => {
                         setContent(e.target.value);
@@ -227,31 +269,46 @@ const Index = () => {
                   <div className="divider divider-secondary">OR</div>
                   <input
                     type="file"
-                    className="file-input file-input-bordered file-input-secondary text-slate-700 w-full max-w-xs"
+                    className="file-input file-input-bordered bg-primaryDarker w-full max-w-xs"
                     onChange={handleFileChange}
                   />
                 </div>
               )}
               <div className="flex gap-10">
                 {loading && (
-                  <span className="loading loading-dots loading-lg text-secondary"></span>
+                  <span className="loading loading-dots loading-lg text-primaryDarker"></span>
                 )}
 
                 {!loading && (
-                  <button className="btn btn-secondary" onClick={handleSave}>
-                    {pageType === 'ADD' ? 'Save' : 'Update'}
-                  </button>
-                )}
-
-                {!loading && pageType === 'UPDATE' && (
-                  <button className="btn btn-error" onClick={handleDelete}>
-                    Delete Content
-                  </button>
-                )}
-
-                {!loading && selectedContentType !== 'Text' && (
                   <button
-                    className="btn btn-info"
+                    className="btn hover:btn-secondary"
+                    onClick={
+                      user?.role === 'admin' ? handleApprove : handleSave
+                    }
+                  >
+                    {user.role === 'admin'
+                      ? 'Approve'
+                      : pageType === 'ADD'
+                      ? 'Save'
+                      : 'Update'}
+                  </button>
+                )}
+
+                {(!loading && pageType === 'UPDATE') ||
+                  (!loading && user?.role === 'admin' && (
+                    <button
+                      className="btn hover:btn-error"
+                      onClick={
+                        user?.role === 'admin' ? handleReject : handleDelete
+                      }
+                    >
+                      {user?.role === 'admin' ? 'Reject' : 'Delete'}
+                    </button>
+                  ))}
+
+                {!loading && selectedContentType !== 'Text' && file?.name && (
+                  <button
+                    className="btn hover:btn-info"
                     onClick={() => {
                       setContent('');
                       setPercent(0);

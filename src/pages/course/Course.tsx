@@ -2,13 +2,16 @@ import { useEffect, useState } from 'react';
 import PageContainer from '../../components/PageContainer/PageContainer';
 import { Course as CourseType } from './IndividualCourse/IndividualCourse';
 import { getAllCourses } from '../../services/courseManagementService';
-import { getMyCoursesWithProgression } from '../../services/progressionService';
+import {
+  enrollToCourse,
+  getMyCoursesWithProgression,
+} from '../../services/progressionService';
 import { useAuthentication } from '../../hooks/useAuthentication';
 import { useNavigate } from 'react-router-dom';
 import routes from '../../routes/route.json';
 import { Progression } from '../myCourses/MyCourses';
 import { createPayment } from '../../services/paymentService';
-
+import { v4 as uuid } from 'uuid';
 
 function Course() {
   const [courses, setCourses] = useState<CourseType[]>([]);
@@ -48,21 +51,23 @@ function Course() {
     setFilteredCourses(filteredCourses);
   }, [search]);
 
-  const handleEnroll =  async (courseId: string) => {
+  const handleEnroll = async (courseId: string) => {
     console.log('Enrolling to course', courseId);
     try {
-      const response = await createPayment(
-        {
-          amount: 50.99,
-          status: "completed",
-          paymentMethod: "credit_card",
-          paymentId: courseId,
-          userId: "user123",
-          courseId: courseId
-        }
-      );
+      const response = await createPayment({
+        amount: 50.99,
+        status: 'completed',
+        paymentMethod: 'credit_card',
+        paymentId: uuid(),
+        userId: user?.id || '',
+        courseId: courseId,
+      });
       if (response) {
-        console.log('Payment successful', response);
+        try {
+          await enrollToCourse(user?.id, courseId);
+        } catch (error) {
+          console.error(error);
+        }
         window.location.replace(response.session.url);
       }
     } catch (error) {
@@ -114,7 +119,9 @@ function Course() {
           </svg>
         </label>
         <div className="mt-10 flex flex-col gap-5">
-        {filteredCourses && Array.isArray(filteredCourses) && filteredCourses.map((course) => {
+          {filteredCourses &&
+            Array.isArray(filteredCourses) &&
+            filteredCourses.map((course) => {
               return (
                 <div
                   key={course._id}

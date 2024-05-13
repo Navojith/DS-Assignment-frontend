@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuthentication } from '../hooks/useAuthentication';
 import { LOGIN, ROOT } from '../routes/route.json';
-import Home from './Home/Home';
+import Home from './home/Home';
 
 const AuthWrapper = () => {
   const { user, isLoading } = useAuthentication();

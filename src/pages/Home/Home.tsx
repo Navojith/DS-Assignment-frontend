@@ -2,14 +2,15 @@ import background from "../../assets/e-learning/background.png";
 import mobile from "../../assets/e-learning/mobileback.png";
 import { Link } from "react-router-dom";
 import routes from "../../routes/route.json";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const Home = () => {
   const [isLoggedin, setIsLoggedin] = useState(false);
+
   useEffect(() => {
     const accessTokenRegex = /access_token=([^&]*)/;
-    console.log("useEffect");
     const isMatch = window.location.href.match(accessTokenRegex);
-    console.log(isMatch);
 
     if (isMatch) {
       const accessToken = isMatch[1];

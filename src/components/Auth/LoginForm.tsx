@@ -5,13 +5,14 @@ import Cookies from "js-cookie";
 
 const LogInForm = () => {
   const handleClick = () => {
-    const callbackUrl = "http://localhost:5173/";
-    const clientId =
-      "53102066216-p7u35iam0hptu5d80l75t8pvv80bmte0.apps.googleusercontent.com";
-    const targetUrl = `https://accounts.google.com/o/oauth2/auth?redirect_uri=${encodeURIComponent(
+    const callbackUrl = import.meta.env.VITE_CALLBACKURL;
+    const clientId = import.meta.env.VITE_CLIENTID;
+    const authorizationEndpoint = import.meta.env
+      .VITE_GOOGLE_OAUTH_AUTHORIZATION_ENDPOINT_URL;
+    const targetUrl = `${authorizationEndpoint}?redirect_uri=${encodeURIComponent(
       callbackUrl
     )}&response_type=token&client_id=${clientId}&scope=openid%20email%20profile`;
-    console.log("targetUrl", targetUrl);
+
     window.location.href = targetUrl;
   };
 
@@ -25,17 +26,7 @@ const LogInForm = () => {
           <div className="text-center text">
             <h1 className="text-4xl font-bold text-violet-50">Welcome Back!</h1>
           </div>
-          <div className="text-center">
-            <h1 className="text-violet-50 text-lg mb-10">
-              Don't have an account?{" "}
-              <a
-                href="#"
-                className="text-violet-50 text-xl font-bold  hover:text-violet-200"
-              >
-                Sign Up
-              </a>
-            </h1>
-          </div>
+          <div className="text-center"></div>
 
           <div className="grid grid-cols-1 gap-4">
             {/* <button className="btn btn-primary">Log In</button> */}

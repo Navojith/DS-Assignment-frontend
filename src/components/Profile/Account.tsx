@@ -1,25 +1,135 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import editing from "../../assets/editing .png";
 import virtualClass from "../../assets/virtual-class.png";
+import Cookies from "js-cookie";
+import { set } from "firebase/database";
 
 const UserAccount = () => {
-  const [username, setUsername] = useState("Ann Perera");
-  const [email, setEmail] = useState("ann@gmail.com");
-  const [phone, setPhone] = useState("0714282414");
-  const [role, setRole] = useState("Learner");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [role, setRole] = useState("");
+  const [isnewUser, setIsNewUser] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/user/currentUser",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              access_token: Cookies.get("access_token"),
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const data = await response.json();
+
+        setUsername(data.fullName);
+        setEmail(data.email);
+        setPhone(data.phone);
+        setRole(data.role);
+        if (role === "" || phone === "") {
+          setIsNewUser(true);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
   };
 
-  const handleUpdateClick = () => {
-    //add code here
+  const handleUpdateClick = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/user/updateUser",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            access_token: Cookies.get("access_token"),
+          },
+          body: JSON.stringify({
+            fullName: username,
+            phone: phone,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to update user data");
+      }
+      setIsEditing(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleLogOut = () => {
-    //add code here
+    Cookies.remove("access_token");
+    window.location.href = "/";
+  };
+
+  const handleDeleteProfile = async () => {
+    console.log("delete");
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/user/deleteUser",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            access_token: Cookies.get("access_token"),
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to delete user data");
+      }
+      Cookies.remove("access_token");
+      window.location.href = "/";
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleNewUser = async (e) => {
+    console.log("update new user");
+    // try {
+    //   const response = await fetch(
+    //     "http://localhost:3000/api/user/updateNewUser",
+    //     {
+    //       method: "PATCH",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         access_token: Cookies.get("access_token"),
+    //       },
+    //       body: JSON.stringify({
+    //         fullName: username,
+    //         phone: phone,
+    //       }),
+    //     }
+    //   );
+    //   if (!response.ok) {
+    //     throw new Error("Failed to update user data");
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    setRole("LEARNER");
+    setPhone("94710627526");
+    setIsNewUser(false);
   };
 
   return (
@@ -31,7 +141,7 @@ const UserAccount = () => {
               Profile - {username}
             </h1>
           </div>
-          <div className="h-[80vh] w-11/12 my-5 mx-14 ">
+          <div className="h-[60vh] w-11/12 my-5 mx-14 ">
             <div className="border-solid border-purple-600 border-2 p-2 rounded-lg m-5">
               <div className="flex flex-row items-center justify-between">
                 <h2 className="text-violet-600 text-xl font-bold">
@@ -48,7 +158,7 @@ const UserAccount = () => {
                 <div>
                   <ol>
                     <li className="mb-2">
-                      <span className="font-bold">Username:</span>{" "}
+                      <span className="font-bold">Username :</span>{" "}
                       {isEditing ? (
                         <input
                           type="text"
@@ -69,20 +179,11 @@ const UserAccount = () => {
                 <div>
                   <ul>
                     <li className="mb-2">
-                      <span className="font-bold">Email:</span>{" "}
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="border border-gray-300 rounded-md p-1"
-                        />
-                      ) : (
-                        <span>{email}</span>
-                      )}
+                      <span className="font-bold">Email :</span>{" "}
+                      <span>{email}</span>
                     </li>
                     <li>
-                      <span className="font-bold">Phone:</span>{" "}
+                      <span className="font-bold">Phone :</span>{" "}
                       {isEditing ? (
                         <input
                           type="text"
@@ -118,11 +219,6 @@ const UserAccount = () => {
               </div>
               <div className="flex flex-row justify-between ms-2">
                 <div>
-                  <input
-                    type="checkbox"
-                    id="deleteProfile"
-                    className="mr-3 mb-1"
-                  />
                   <label htmlFor="deleteProfile">
                     Do you want to delete the profile?
                   </label>
@@ -133,20 +229,66 @@ const UserAccount = () => {
                 </div>
                 <div>
                   <button
-                    onClick={() => {}}
+                    onClick={handleDeleteProfile}
                     className="hover:text-red-600 hover:border-red-600 border-violet-50 text-violet-50"
-                    disabled={
-                      !(
-                        document.getElementById(
-                          "deleteProfile"
-                        ) as HTMLInputElement
-                      )?.checked
-                    }
                   >
                     Delete
                   </button>
                 </div>
               </div>
+            </div>
+            <div>
+              {isnewUser ? (
+                <form>
+                  <div className="border-solid border-purple-600 border-2 p-2 rounded-lg m-5">
+                    <div className="flex flex-row items-center justify-between">
+                      <h2 className="text-violet-600 text-xl font-bold mb-5">
+                        Update Role and Phone Number
+                      </h2>
+                    </div>
+                    <div className="flex flex-row justify-center gap-20 text-xl">
+                      <div>
+                        <label htmlFor="role" className="pr-5">
+                          Role :{" "}
+                        </label>
+                        <select
+                          id="role"
+                          value={role}
+                          onChange={(e) => setRole(e.target.value)}
+                          className="border border-gray-300 rounded-md p-1 bg-black"
+                        >
+                          <option value="learner" className="text-white">
+                            Learner
+                          </option>
+                          <option value="instructor" className="text-white">
+                            Instructor
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <label htmlFor="phone" className="pr-5">
+                          Phone Number :{" "}
+                        </label>
+                        <input
+                          type="text"
+                          id="phone"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className="border border-gray-300 rounded-md p-1"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-center">
+                      <button
+                        onClick={handleNewUser}
+                        className="btn hover:btn-secondary text-white font-bold py-2 px-4 rounded m-5"
+                      >
+                        Update Role and Phone Number
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              ) : null}
             </div>
           </div>
         </div>

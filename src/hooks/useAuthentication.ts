@@ -5,6 +5,7 @@ export interface User {
   email: string;
   name: string;
   avatar: string;
+  phone?: string;
   role: 'student' | 'instructor' | 'admin';
 }
 
@@ -15,10 +16,13 @@ export const useAuthentication = () => {
   useEffect(() => {
     setIsLoading(true);
     setUser({
-      id: '6630b0f269c099f21afc289d',
-      email: 'example@example.com',
+      id: '664191c26d71d98b40c14326',
+      email: 'navojith22@gmail.com',
       name: 'Example',
-      role: 'instructor',
+      //role: 'instructor',
+      //role: 'admin',
+      role: 'student',
+      phone: '94713197055',
       avatar: 'https://example.com/avatar.png',
     });
     //setUser(null);

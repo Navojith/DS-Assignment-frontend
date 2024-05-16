@@ -17,6 +17,36 @@ export const getMyCoursesWithProgression = async (userId: string) => {
     console.error(err);
   }
 };
+export const enrollToCourse = async (
+  userId: string,
+  courseId: string,
+  email?: string,
+  phone?: string
+) => {
+  try {
+    const response = await apiRequestService.sendRequest(
+      `${PROGRESSION_SERVICE_BASE_URL}/course-progression`,
+      'post',
+      {},
+      {},
+      {
+        userId,
+        courseId,
+        completedSteps: {
+          '1': 0,
+        },
+        email,
+        phone,
+      }
+    );
+    if (response) {
+      return response;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const getCourseProgression = async (
   userId: string,
   courseId: string

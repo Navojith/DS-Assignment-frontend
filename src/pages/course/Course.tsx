@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import PageContainer from '../../components/PageContainer/PageContainer';
 import { useAuthentication } from '../../hooks/useAuthentication';
 import routes from '../../routes/route.json';
 import { getAllCourses } from '../../services/courseManagementService';
 import { createPayment } from '../../services/paymentService';
-import { v4 as uuidv4 } from 'uuid';
 import { getMyCoursesWithProgression } from '../../services/progressionService';
 import { Progression } from '../myCourses/MyCourses';
 import { Course as CourseType } from './IndividualCourse/IndividualCourse';
-
 
 function Course() {
   const [courses, setCourses] = useState<CourseType[]>([]);
@@ -52,18 +51,15 @@ function Course() {
   const handleEnroll = async (courseId: string) => {
     console.log('Enrolling to course', courseId);
     try {
-
-      const paymentId = uuidv4(); 
-      const response = await createPayment(
-        {
-          amount: 50.99,
-          status: "completed",
-          paymentMethod: "credit_card",
-          paymentId: paymentId,
-          userId: "user123",
-          courseId: courseId
-        }
-      );
+      const paymentId = uuidv4();
+      const response = await createPayment({
+        amount: 50.99,
+        status: 'completed',
+        paymentMethod: 'credit_card',
+        paymentId: paymentId,
+        userId: 'user123',
+        courseId: courseId,
+      });
       if (response) {
         console.log('Payment successful', response);
         window.location.replace(response.session.url);
@@ -93,14 +89,24 @@ function Course() {
         Enroll Now
       </button>
     ) : user?.role === 'instructor' ? (
-      <button
-        className="ml-auto"
-        onClick={() =>
-          navigate(routes?.EDIT_COURSE?.route?.replace(':id', courseId))
-        }
-      >
-        Manage Course
-      </button>
+      <div className="flex gap-4">
+        <button
+          className="ml-auto"
+          onClick={() =>
+            navigate(routes?.EDIT_COURSE?.route?.replace(':id', courseId))
+          }
+        >
+          Manage Course
+        </button>
+        <button
+          className="ml-auto"
+          onClick={() =>
+            navigate(routes?.COURSE_CONTENT?.route?.replace(':id', courseId))
+          }
+        >
+          Manage Content
+        </button>
+      </div>
     ) : (
       <button
         className="ml-auto"

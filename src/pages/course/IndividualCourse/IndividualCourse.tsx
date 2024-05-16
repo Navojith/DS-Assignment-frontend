@@ -160,7 +160,8 @@ function IndividualCourse() {
                       <button
                         className={
                           'mt-5 ml-auto flex items-center gap-2' +
-                          (progress?.completedSteps[step?.step] === 0
+                          (progress?.completedSteps[step?.step] === 0 ||
+                          progress?.completedSteps[step?.step] == undefined
                             ? ''
                             : 'btn btn-active btn-neutral')
                         }
@@ -174,7 +175,8 @@ function IndividualCourse() {
                         {isProgressLoading && (
                           <span className="loading loading-spinner"></span>
                         )}
-                        {progress?.completedSteps[step?.step] === 0
+                        {progress?.completedSteps[step?.step] === 0 ||
+                        progress?.completedSteps[step?.step] == undefined
                           ? 'Mark as Completed'
                           : 'Mark as not Completed'}
                       </button>

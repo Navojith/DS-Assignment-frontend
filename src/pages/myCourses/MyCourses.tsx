@@ -67,7 +67,7 @@ function MyCourses() {
                 navigate(`${COURSE.route}/${course.courseDetails.courseId}`)
               }
             >
-              <div className="flex  flex-col gap-2">
+              <div className="flex flex-col gap-2 w-[100%] md:w-[75%]">
                 <h3 className="text-xl font-bold">
                   {course.courseDetails.name}
                 </h3>
@@ -79,8 +79,8 @@ function MyCourses() {
                   )}%`}
                 </p>
               </div>
-              <div className="ml-auto mr-5">
-                <button>Go to Course</button>
+              <div className="flex w-[100%] md:w-[25%]">
+                <button className="ml-auto">Go to Course</button>
               </div>
             </div>
           );

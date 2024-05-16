@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import PageContainer from '../../components/PageContainer/PageContainer';
-import { Course as CourseType } from './IndividualCourse/IndividualCourse';
+import { useAuthentication } from '../../hooks/useAuthentication';
+import routes from '../../routes/route.json';
 import { getAllCourses } from '../../services/courseManagementService';
+import { createPayment } from '../../services/paymentService';
 import {
   enrollToCourse,
   getMyCoursesWithProgression,
 } from '../../services/progressionService';
-import { useAuthentication } from '../../hooks/useAuthentication';
-import { useNavigate } from 'react-router-dom';
-import routes from '../../routes/route.json';
-import { createPayment } from '../../services/paymentService';
-import { v4 as uuid } from 'uuid';
 import { Progression } from '../myCourses/MyCourses';
+import { Course as CourseType } from './IndividualCourse/IndividualCourse';
 
 function Course() {
   const [courses, setCourses] = useState<CourseType[]>([]);
@@ -95,14 +95,24 @@ function Course() {
         Enroll Now
       </button>
     ) : user?.role === 'instructor' ? (
-      <button
-        className="ml-auto"
-        onClick={() =>
-          navigate(routes?.EDIT_COURSE?.route?.replace(':id', courseId))
-        }
-      >
-        Manage Course
-      </button>
+      <div className="flex gap-4">
+        <button
+          className="ml-auto"
+          onClick={() =>
+            navigate(routes?.EDIT_COURSE?.route?.replace(':id', courseId))
+          }
+        >
+          Manage Course
+        </button>
+        <button
+          className="ml-auto"
+          onClick={() =>
+            navigate(routes?.COURSE_CONTENT?.route?.replace(':id', courseId))
+          }
+        >
+          Manage Content
+        </button>
+      </div>
     ) : (
       <button
         className="ml-auto"

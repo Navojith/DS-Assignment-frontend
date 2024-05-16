@@ -27,7 +27,7 @@ const Index = () => {
   const [selectedContentType, setSelectedContentType] =
     useState<string>('Text');
   const [content, setContent] = useState<string>('');
-  const [isApproved, setIsApproved] = useState<boolean>(false);
+  const [isApproved, setIsApproved] = useState<boolean | 'pending'>(false);
 
   const [file, setFile] = useState<File | undefined>(undefined);
   const [percent, setPercent] = useState(0);
@@ -169,7 +169,14 @@ const Index = () => {
       (content) => content.contentType === selectedContentType
     );
 
-    setIsApproved(selectedContentTypeData[0]?.isApproved || false);
+    if (
+      selectedContentTypeData[0]?.wasEvaluated === false ||
+      !selectedContentTypeData[0]
+    ) {
+      setIsApproved('pending');
+    } else {
+      setIsApproved(selectedContentTypeData[0]?.isApproved);
+    }
 
     if (selectedContentTypeData.length > 0) {
       setPageType('UPDATE');
@@ -199,7 +206,9 @@ const Index = () => {
               <div className="text-2xl font-bold mb-5">
                 Course Content of {courseData?.name}
               </div>
-              {isApproved ? (
+              {isApproved === 'pending' ? (
+                <div className="badge badge-warning badge-outline">Pending</div>
+              ) : isApproved ? (
                 <div className="badge badge-secondary badge-outline">
                   Approved
                 </div>
@@ -294,17 +303,17 @@ const Index = () => {
                   </button>
                 )}
 
-                {(!loading && pageType === 'UPDATE') ||
-                  (!loading && user?.role === 'admin' && (
-                    <button
-                      className="btn hover:btn-error"
-                      onClick={
-                        user?.role === 'admin' ? handleReject : handleDelete
-                      }
-                    >
-                      {user?.role === 'admin' ? 'Reject' : 'Delete'}
-                    </button>
-                  ))}
+                {((!loading && pageType === 'UPDATE') ||
+                  (!loading && user?.role === 'admin')) && (
+                  <button
+                    className="btn hover:btn-error"
+                    onClick={
+                      user?.role === 'admin' ? handleReject : handleDelete
+                    }
+                  >
+                    {user?.role === 'admin' ? 'Reject' : 'Delete'}
+                  </button>
+                )}
 
                 {!loading && selectedContentType !== 'Text' && file?.name && (
                   <button

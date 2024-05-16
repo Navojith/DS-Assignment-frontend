@@ -1,8 +1,18 @@
-import { Link, useLocation } from 'react-router-dom';
-import routes from '../../routes/route.json';
+import { Link, useLocation } from "react-router-dom";
+import routes from "../../routes/route.json";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import user from "../../assets/user .png";
 
 const Navbar = () => {
   const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (Cookies.get("access_token")) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <div className="navbar bg-primaryLighter border-b-2 border-b-secondary">
@@ -30,9 +40,9 @@ const Navbar = () => {
           >
             <li>
               <Link
-                to={'/'}
+                to={"/"}
                 className={
-                  location.pathname === '/' ? 'text-secondary' : 'text-text'
+                  location.pathname === "/" ? "text-secondary" : "text-text"
                 }
               >
                 Home
@@ -42,7 +52,7 @@ const Navbar = () => {
               <Link
                 to={routes.COURSE.route}
                 className={
-                  location.pathname === '' ? 'text-secondary' : 'text-text'
+                  location.pathname === "" ? "text-secondary" : "text-text"
                 }
               >
                 Courses
@@ -52,7 +62,7 @@ const Navbar = () => {
               <Link
                 to={routes.MY_COURSES.route}
                 className={
-                  location.pathname === '' ? 'text-secondary' : 'text-text'
+                  location.pathname === "" ? "text-secondary" : "text-text"
                 }
               >
                 My Courses
@@ -68,7 +78,7 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 bg-primaryLighter">
           <li>
-            <Link to={'./'}>Home</Link>
+            <Link to={"./"}>Home</Link>
           </li>
           <li>
             <Link to={routes.COURSE.route}>Courses</Link>
@@ -79,14 +89,15 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link to={routes.LOGIN.route} className="btn">
-          LogIn
-        </Link>
-      </div>
-      <div className="navbar-end">
-        <Link to={routes.SIGNUP.route} className="btn">
-          SignUp
-        </Link>
+        {isLoggedIn ? (
+          <Link to={routes.ACCOUNT.route} className="btn">
+            <img src={user} alt="user" className="h-6 w-6" />
+          </Link>
+        ) : (
+          <Link to={routes.LOGIN.route} className="btn">
+            LogIn
+          </Link>
+        )}
       </div>
     </div>
   );

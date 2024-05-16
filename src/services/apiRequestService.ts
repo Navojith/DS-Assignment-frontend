@@ -1,7 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-//import { getUserAccessToken } from '../utils/userAuthentication';
-import { HEADERS } from '../constants/common.constants';
-import { generateTraceId } from '../utils/generateTraceId';
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+
+import { HEADERS } from "../constants/common.constants";
+import { generateTraceId } from "../utils/generateTraceId";
+import { getAccessToken } from "../utils/userAuthentication";
 
 class APIRequestService {
   private instance: AxiosInstance;
@@ -12,7 +13,7 @@ class APIRequestService {
 
   async sendRequest(
     url: string,
-    method: string = 'post',
+    method: string = "post",
     headers: any = {},
     params?: any,
     body?: any,
@@ -31,16 +32,15 @@ class APIRequestService {
       this.instance.interceptors.request.use(
         async (config) => {
           try {
-            // TODO: Shenan: add token here
-            // const userAccessToken = await getUserAccessToken();
-            const userAccessToken = 'aaaa';
-            if (!config.headers['Authorization'] && userAccessToken) {
-              config.headers['Authorization'] = `Bearer ${userAccessToken}`;
+            const userAccessToken = await getAccessToken();
+            console.log("userAccessToken", userAccessToken);
+            // const userAccessToken = "aaaa";
+            if (!config.headers["Authorization"] && userAccessToken) {
+              config.headers["Authorization"] = `Bearer ${userAccessToken}`;
               config.headers[HEADERS.TRACE_ID_HEADER] = generateTraceId();
             }
             if (!config.headers[HEADERS.USER_ID_HEADER]) {
-              // TODO: Shenan: add user id here
-              config.headers[HEADERS.USER_ID_HEADER] = 'user-001';
+              config.headers[HEADERS.USER_ID_HEADER] = userAccessToken;
             }
 
             return config;
@@ -61,7 +61,7 @@ class APIRequestService {
         console.error(error);
       }
       if (axios.isAxiosError(error) && error.response?.status === 403) {
-        throw new Error('API not available');
+        throw new Error("API not available");
       } else {
         throw error;
       }

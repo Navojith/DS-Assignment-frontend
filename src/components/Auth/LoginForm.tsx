@@ -1,7 +1,21 @@
 import learning from "../../assets/learning.png";
 import google from "../../assets/google.png";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const LogInForm = () => {
+  const handleClick = () => {
+    const callbackUrl = import.meta.env.VITE_CALLBACKURL;
+    const clientId = import.meta.env.VITE_CLIENTID;
+    const authorizationEndpoint = import.meta.env
+      .VITE_GOOGLE_OAUTH_AUTHORIZATION_ENDPOINT_URL;
+    const targetUrl = `${authorizationEndpoint}?redirect_uri=${encodeURIComponent(
+      callbackUrl
+    )}&response_type=token&client_id=${clientId}&scope=openid%20email%20profile`;
+
+    window.location.href = targetUrl;
+  };
+
   return (
     <>
       <div>
@@ -12,18 +26,11 @@ const LogInForm = () => {
           <div className="text-center text">
             <h1 className="text-4xl font-bold text-violet-50">Welcome Back!</h1>
           </div>
-          <div className="text-center">
-            <h1 className="text-violet-50 text-lg mb-10">
-              Don't have an account?{" "}
-              <a href="#" className="text-violet-50 text-xl font-bold">
-                Sign Up
-              </a>
-            </h1>
-          </div>
+          <div className="text-center"></div>
 
           <div className="grid grid-cols-1 gap-4">
             {/* <button className="btn btn-primary">Log In</button> */}
-            <button className="btn btn-google border-none">
+            <button className="btn btn-google" onClick={handleClick}>
               {" "}
               <img src={google} className="w-5 h-5"></img>Continue with Google
             </button>

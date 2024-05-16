@@ -2,11 +2,34 @@ import background from "../../assets/e-learning/background.png";
 import mobile from "../../assets/e-learning/mobileback.png";
 import { Link } from "react-router-dom";
 import routes from "../../routes/route.json";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const Home = () => {
+  const [isLoggedin, setIsLoggedin] = useState(false);
+
+  useEffect(() => {
+    const accessTokenRegex = /access_token=([^&]*)/;
+    const isMatch = window.location.href.match(accessTokenRegex);
+
+    if (isMatch) {
+      const accessToken = isMatch[1];
+      Cookies.set("access_token", accessToken);
+      fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          access_token: accessToken,
+        },
+        // body: JSON.stringify({ accessToken }),
+      });
+
+      setIsLoggedin(true);
+    }
+  }, []);
+
   return (
-   
-      <div className="h-full w-full overflow-hidden">
+    <div className="h-full w-full overflow-hidden">
       <div className="px-5 xl:px-0 max-w-3xl lg:max-w-5xl xl:max-w-5xl w-full mx-auto relative">
         <div className="flex justify-start items-end my-5 xl:my-20">
           <div className="md:max-w-[400px] flex flex-col gap-6 my-14">
@@ -22,12 +45,12 @@ const Home = () => {
               </p>
             </div>
             <div>
-            <Link to={routes.COURSE.route}>
-              <button className="py-3 px-7 text-white font-bold bg-gradient-to-r from-red-500 to-pink-600 rounded-3xl group relative overflow-hidden">
-                Explore Courses
-                <div className="absolute duration-300 inset-0 w-full h-full transition-all scale-0 group-hover:scale-100 group-hover:bg-white/30 rounded-2xl"></div>
-              </button>
-            </Link>
+              <Link to={routes.COURSE.route}>
+                <button className="py-3 px-7 text-white font-bold bg-gradient-to-r from-red-500 to-pink-600 rounded-3xl group relative overflow-hidden">
+                  Explore Courses
+                  <div className="absolute duration-300 inset-0 w-full h-full transition-all scale-0 group-hover:scale-100 group-hover:bg-white/30 rounded-2xl"></div>
+                </button>
+              </Link>
             </div>
           </div>
           <div className="absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:-right-32 md:left-auto xl:-right-80 xl:-top-20 md:-top-5 lg:-right-28 lg:-top-14 ">
@@ -45,7 +68,6 @@ const Home = () => {
         </div>
       </div>
     </div>
-  
   );
 };
 

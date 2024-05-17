@@ -7,6 +7,7 @@ export interface User {
   email: string;
   phone: string;
   role: "student" | "instructor" | "admin";
+
 }
 
 export const useAuthentication = () => {
@@ -45,6 +46,7 @@ export const useAuthentication = () => {
     };
     // setIsLoading(false);
     fetchUser();
+  
   }, []);
   // return { user, isLoading };
   return { user };

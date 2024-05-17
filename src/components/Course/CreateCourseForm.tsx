@@ -12,7 +12,6 @@ interface Props {
 }
 
 const CreateCourseForm = ({ courseData, setCreatedCourse }: Props) => {
-  console.log('courseData', courseData);
   const [courseId, setCourseId] = useState(courseData?.courseId || '');
   const [name, setName] = useState(courseData?.name || '');
   const [price, setPrice] = useState(courseData?.price || '');
@@ -128,7 +127,9 @@ const CreateCourseForm = ({ courseData, setCreatedCourse }: Props) => {
       )}
       <div className="h-[80vh] justify-center place-content-center text-center">
         <div className="flex flex-col gap-10 bg-primaryLighter p-5 rounded-md border-2 border-secondary">
-          <h1 className="text-2xl font-semibold">ADD NEW COURSE</h1>
+          <h1 className="text-2xl font-semibold">
+            {courseData ? 'UPDATE COURSE' : 'ADD NEW COURSE'}
+          </h1>
           <div className="grid grid-cols-2 gap-2 font-semibold">
             <label className="input input-bordered bg-primaryDarker flex items-center gap-2 col-span-2">
               Course ID

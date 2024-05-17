@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import PageContainer from '../../components/PageContainer/PageContainer';
-import { Course as CourseType } from './IndividualCourse/IndividualCourse';
+import { useAuthentication } from '../../hooks/useAuthentication';
+import routes from '../../routes/route.json';
 import { getAllCourses } from '../../services/courseManagementService';
+import { createPayment } from '../../services/paymentService';
 import {
   enrollToCourse,
   getMyCoursesWithProgression,
 } from '../../services/progressionService';
-import { useAuthentication } from '../../hooks/useAuthentication';
-import { useNavigate } from 'react-router-dom';
-import routes from '../../routes/route.json';
-import { createPayment } from '../../services/paymentService';
-import { v4 as uuid } from 'uuid';
 import { Progression } from '../myCourses/MyCourses';
+import { Course as CourseType } from './IndividualCourse/IndividualCourse';
 
 function Course() {
   const [courses, setCourses] = useState<CourseType[]>([]);
@@ -46,7 +46,7 @@ function Course() {
 
   useEffect(() => {
     const filteredCourses = courses.filter((course) =>
-      course.name.toLowerCase().includes(search.toLowerCase())
+      course?.name?.toLowerCase().includes(search.toLowerCase())
     );
     setFilteredCourses(filteredCourses);
   }, [search]);
@@ -64,11 +64,11 @@ function Course() {
       });
       if (response) {
         try {
-          await enrollToCourse(user?.id, courseId);
+          await enrollToCourse(user?.id, courseId, user?.email);
         } catch (error) {
           console.error(error);
         }
-        window.location.replace(response.session.url);
+        window?.location?.replace(response.session.url);
       }
     } catch (error) {
       console.error(error);
@@ -95,14 +95,24 @@ function Course() {
         Enroll Now
       </button>
     ) : user?.role === 'instructor' ? (
-      <button
-        className="ml-auto"
-        onClick={() =>
-          navigate(routes?.EDIT_COURSE?.route?.replace(':id', courseId))
-        }
-      >
-        Manage Course
-      </button>
+      <div className="flex gap-4">
+        <button
+          className="ml-auto"
+          onClick={() =>
+            navigate(routes?.EDIT_COURSE?.route?.replace(':id', courseId))
+          }
+        >
+          Manage Course
+        </button>
+        <button
+          className="ml-auto"
+          onClick={() =>
+            navigate(routes?.COURSE_CONTENT?.route?.replace(':id', courseId))
+          }
+        >
+          Manage Content
+        </button>
+      </div>
     ) : (
       <button
         className="ml-auto"
@@ -142,21 +152,21 @@ function Course() {
         <div className="mt-10 flex flex-col gap-5">
           {filteredCourses &&
             Array.isArray(filteredCourses) &&
-            filteredCourses.map((course) => {
+            filteredCourses?.map((course) => {
               return (
                 <div
-                  key={course._id}
+                  key={course?._id}
                   className={
                     'border border-secondary bg-primaryLighter hover:bg-primaryDark p-3 md:px-10 md:py-5 rounded flex flex-row gap-2 items-center flex-wrap md:flex-nowrap'
                   }
                 >
                   <div className="flex flex-col gap-2 w-[100%] md:w-[75%]">
-                    <h3 className="text-xl font-bold">{course.name}</h3>
-                    <p>{course.description}</p>
-                    <p>{`Price : ${course.price} $`}</p>
+                    <h3 className="text-xl font-bold">{course?.name}</h3>
+                    <p>{course?.description}</p>
+                    <p>{`Price : ${course?.price} $`}</p>
                   </div>
                   <div className="flex w-[100%] md:w-[25%]">
-                    {RenderButton(course.courseId)}
+                    {RenderButton(course?.courseId)}
                   </div>
                 </div>
               );

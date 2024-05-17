@@ -20,7 +20,7 @@ export const getCourse = async (courseId: string) => {
 export const getAllCourses = async () => {
   try {
     const response = await apiRequestService.sendRequest(
-      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/courses`,
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/courses/`,
       'get'
     );
     if (response) {
@@ -67,7 +67,7 @@ export const getCourseContentByStep = async (
 export const createCourse = (course: CourseDTO) => {
   try {
     const response = apiRequestService.sendRequest(
-      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/courses`,
+      `${COURSE_MANAGEMENT_SERVICE_BASE_URL}/courses/`,
       'post',
       {},
       {},

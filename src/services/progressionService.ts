@@ -1,8 +1,7 @@
 import { UpdateStepsBody } from '../pages/course/IndividualCourse/IndividualCourse';
 import apiRequestService from './apiRequestService';
 
-const PROGRESSION_SERVICE_BASE_URL = import.meta.env
-  .VITE_PROGRESSION_SERVICE_BASE_URL;
+const PROGRESSION_SERVICE_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const getMyCoursesWithProgression = async (userId: string) => {
   try {
@@ -25,7 +24,37 @@ export const enrollToCourse = async (
 ) => {
   try {
     const response = await apiRequestService.sendRequest(
-      `${PROGRESSION_SERVICE_BASE_URL}/course-progression`,
+      `${PROGRESSION_SERVICE_BASE_URL}/course-progression/`,
+      'post',
+      {},
+      {},
+      {
+        userId,
+        courseId,
+        completedSteps: {
+          '1': 0,
+        },
+        email,
+        phone,
+      }
+    );
+    if (response) {
+      return response;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const enrollToCourseAndSendSms = async (
+  userId: string,
+  courseId: string,
+  email?: string,
+  phone?: string
+) => {
+  try {
+    const response = await apiRequestService.sendRequest(
+      `${PROGRESSION_SERVICE_BASE_URL}/course-progression/create-and-send-sms`,
       'post',
       {},
       {},

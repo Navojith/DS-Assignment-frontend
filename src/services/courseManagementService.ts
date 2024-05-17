@@ -1,8 +1,7 @@
 import { CourseContentDTO, CourseDTO } from '../types/courseTypes';
 import apiRequestService from './apiRequestService';
 
-const COURSE_MANAGEMENT_SERVICE_BASE_URL = import.meta.env
-  .VITE_COURSE_MANAGEMENT_SERVICE_BASE_URL;
+const COURSE_MANAGEMENT_SERVICE_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const getCourse = async (courseId: string) => {
   try {

@@ -7,7 +7,7 @@ import routes from '../../routes/route.json';
 import { getAllCourses } from '../../services/courseManagementService';
 import { createPayment } from '../../services/paymentService';
 import {
-  enrollToCourse,
+  enrollToCourseAndSendSms,
   getMyCoursesWithProgression,
 } from '../../services/progressionService';
 import { Progression } from '../myCourses/MyCourses';
@@ -64,7 +64,13 @@ function Course() {
       });
       if (response) {
         try {
-          await enrollToCourse(user?.id, courseId, user?.email);
+          // await enrollToCourse(user?.id, courseId, user?.email);
+          await enrollToCourseAndSendSms(
+            user?.id,
+            courseId,
+            user?.email,
+            user?.phone
+          );
         } catch (error) {
           console.error(error);
         }
@@ -80,17 +86,11 @@ function Course() {
       ownedCourses &&
       Array.isArray(ownedCourses) &&
       ownedCourses?.map((course) => course.courseDetails.courseId);
+    console.log('User:', user?.role);
 
     return ownedCourses &&
       Array.isArray(ownedCourses) &&
-      ownedCourseIds.includes(courseId) ? (
-      <button
-        className="ml-auto"
-        onClick={() => navigate(`${routes.COURSE.route}/${courseId}`)}
-      >
-        View Course
-      </button>
-    ) : user?.role === 'student' ? (
+      user?.role === 'student' ? (
       <button className="ml-auto" onClick={() => handleEnroll(courseId)}>
         Enroll Now
       </button>

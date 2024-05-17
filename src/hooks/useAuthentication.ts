@@ -19,9 +19,9 @@ export const useAuthentication = () => {
       id: '664191c26d71d98b40c14326',
       email: 'navojith22@gmail.com',
       name: 'Example',
-      //role: 'instructor',
-      //role: 'admin',
-      role: 'student',
+      role: 'instructor',
+      // role: 'admin',
+      // role: 'student',
       phone: '94713197055',
       avatar: 'https://example.com/avatar.png',
     });

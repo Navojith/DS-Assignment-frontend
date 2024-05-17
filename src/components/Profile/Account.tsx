@@ -1,14 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
-import editing from "../../assets/editing .png";
-import virtualClass from "../../assets/virtual-class.png";
-import Cookies from "js-cookie";
-import { set } from "firebase/database";
+import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
+import editing from '../../assets/editing .png';
+import virtualClass from '../../assets/virtual-class.png';
 
 const UserAccount = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [role, setRole] = useState("");
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [role, setRole] = useState('');
   const [isnewUser, setIsNewUser] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -17,17 +16,17 @@ const UserAccount = () => {
     const fetchUser = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/user/currentUser",
+          'http://localhost:3000/api/user/currentUser',
           {
-            method: "GET",
+            method: 'GET',
             headers: {
-              "Content-Type": "application/json",
-              access_token: Cookies.get("access_token"),
+              'Content-Type': 'application/json',
+              access_token: Cookies.get('access_token'),
             },
           }
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch user data");
+          throw new Error('Failed to fetch user data');
         }
 
         const data = await response.json();
@@ -36,7 +35,7 @@ const UserAccount = () => {
         setEmail(data.email);
         setPhone(data.phone);
         setRole(data.role);
-        if (role === "" || phone === "") {
+        if (role === '' || phone === '') {
           setIsNewUser(true);
         }
       } catch (error) {
@@ -54,12 +53,12 @@ const UserAccount = () => {
   const handleUpdateClick = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/user/updateUser",
+        'http://localhost:3000/api/user/updateUser',
         {
-          method: "PATCH",
+          method: 'PATCH',
           headers: {
-            "Content-Type": "application/json",
-            access_token: Cookies.get("access_token"),
+            'Content-Type': 'application/json',
+            access_token: Cookies.get('access_token'),
           },
           body: JSON.stringify({
             fullName: username,
@@ -68,7 +67,7 @@ const UserAccount = () => {
         }
       );
       if (!response.ok) {
-        throw new Error("Failed to update user data");
+        throw new Error('Failed to update user data');
       }
       setIsEditing(false);
     } catch (error) {
@@ -77,35 +76,35 @@ const UserAccount = () => {
   };
 
   const handleLogOut = () => {
-    Cookies.remove("access_token");
-    window.location.href = "/";
+    Cookies.remove('access_token');
+    window.location.href = '/';
   };
 
   const handleDeleteProfile = async () => {
-    console.log("delete");
+    console.log('delete');
     try {
       const response = await fetch(
-        "http://localhost:3000/api/user/deleteUser",
+        'http://localhost:3000/api/user/deleteUser',
         {
-          method: "DELETE",
+          method: 'DELETE',
           headers: {
-            "Content-Type": "application/json",
-            access_token: Cookies.get("access_token"),
+            'Content-Type': 'application/json',
+            access_token: Cookies.get('access_token'),
           },
         }
       );
       if (!response.ok) {
-        throw new Error("Failed to delete user data");
+        throw new Error('Failed to delete user data');
       }
-      Cookies.remove("access_token");
-      window.location.href = "/";
+      Cookies.remove('access_token');
+      window.location.href = '/';
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleNewUser = async (e) => {
-    console.log("update new user");
+    console.log('update new user');
     // try {
     //   const response = await fetch(
     //     "http://localhost:3000/api/user/updateNewUser",
@@ -127,8 +126,8 @@ const UserAccount = () => {
     // } catch (error) {
     //   console.error(error);
     // }
-    setRole("LEARNER");
-    setPhone("94710627526");
+    setRole('LEARNER');
+    setPhone('94710627526');
     setIsNewUser(false);
   };
 
@@ -158,7 +157,7 @@ const UserAccount = () => {
                 <div>
                   <ol>
                     <li className="mb-2">
-                      <span className="font-bold">Username :</span>{" "}
+                      <span className="font-bold">Username :</span>{' '}
                       {isEditing ? (
                         <input
                           type="text"
@@ -171,7 +170,7 @@ const UserAccount = () => {
                       )}
                     </li>
                     <li>
-                      <span className="font-bold">Role :</span>{" "}
+                      <span className="font-bold">Role :</span>{' '}
                       <span>{role}</span>
                     </li>
                   </ol>
@@ -179,11 +178,11 @@ const UserAccount = () => {
                 <div>
                   <ul>
                     <li className="mb-2">
-                      <span className="font-bold">Email :</span>{" "}
+                      <span className="font-bold">Email :</span>{' '}
                       <span>{email}</span>
                     </li>
                     <li>
-                      <span className="font-bold">Phone :</span>{" "}
+                      <span className="font-bold">Phone :</span>{' '}
                       {isEditing ? (
                         <input
                           type="text"
@@ -249,7 +248,7 @@ const UserAccount = () => {
                     <div className="flex flex-row justify-center gap-20 text-xl">
                       <div>
                         <label htmlFor="role" className="pr-5">
-                          Role :{" "}
+                          Role :{' '}
                         </label>
                         <select
                           id="role"
@@ -267,7 +266,7 @@ const UserAccount = () => {
                       </div>
                       <div>
                         <label htmlFor="phone" className="pr-5">
-                          Phone Number :{" "}
+                          Phone Number :{' '}
                         </label>
                         <input
                           type="text"

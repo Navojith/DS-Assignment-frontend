@@ -1,8 +1,7 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
 import AuthWrapper from "../pages/AuthWrapper";
 import Login from "../pages/auth/Login";
-import SignUp from "../pages/auth/Signup";
 import Course from "../pages/course/Course";
 import IndividualCourse from "../pages/course/IndividualCourse/IndividualCourse";
 import CourseContent from "../pages/courseContent/[id]";
@@ -20,7 +19,6 @@ import {
   LOGIN,
   MY_COURSES,
   ROOT,
-  SIGNUP,
 } from "./route.json";
 
 const AppRoutes = () => {
@@ -45,8 +43,8 @@ const AppRoutes = () => {
       </Route>
       <Route
         path={LOGIN.route}
-        // element={user ? <Navigate to={ROOT.route} replace /> : <Login />}
-        element={<Login />}
+        element={user ? <Navigate to={ROOT.route} replace /> : <Login />}
+        // element={<Login />}
       />
     </Routes>
   );

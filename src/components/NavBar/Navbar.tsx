@@ -3,16 +3,18 @@ import routes from "../../routes/route.json";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import user from "../../assets/user .png";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (Cookies.get("access_token")) {
       setIsLoggedIn(true);
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="navbar bg-primaryLighter border-b-2 border-b-secondary">

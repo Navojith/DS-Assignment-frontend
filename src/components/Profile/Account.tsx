@@ -2,50 +2,35 @@ import { useCallback, useEffect, useState } from "react";
 import editing from "../../assets/editing .png";
 import virtualClass from "../../assets/virtual-class.png";
 import Cookies from "js-cookie";
-import { set } from "firebase/database";
+import { useAuthentication } from "../../hooks/useAuthentication";
+import { useNavigate } from "react-router-dom";
 
 const UserAccount = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("");
+  const { user } = useAuthentication();
   const [isnewUser, setIsNewUser] = useState(false);
+  const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/api/user/currentUser",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              access_token: Cookies.get("access_token"),
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch user data");
-        }
+    console.log(user);
 
-        const data = await response.json();
+    setUsername(user?.fullName || "");
+    setEmail(user?.email || "");
+    setPhone(user?.phone || "");
+    setRole(user?.role || "");
 
-        setUsername(data.fullName);
-        setEmail(data.email);
-        setPhone(data.phone);
-        setRole(data.role);
-        if (role === "" || phone === "") {
-          setIsNewUser(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    console.log(!user?.role && !user?.phone);
 
-    fetchUser();
-  }, []);
+    if (!(!user?.role && !user?.phone)) {
+      setIsNewUser(true);
+      console.log(isnewUser);
+    }
+  }, [user]);
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -98,35 +83,35 @@ const UserAccount = () => {
         throw new Error("Failed to delete user data");
       }
       Cookies.remove("access_token");
-      window.location.href = "/";
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleNewUser = async (e) => {
+  const handleNewUser = async () => {
     console.log("update new user");
-    // try {
-    //   const response = await fetch(
-    //     "http://localhost:3000/api/user/updateNewUser",
-    //     {
-    //       method: "PATCH",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         access_token: Cookies.get("access_token"),
-    //       },
-    //       body: JSON.stringify({
-    //         fullName: username,
-    //         phone: phone,
-    //       }),
-    //     }
-    //   );
-    //   if (!response.ok) {
-    //     throw new Error("Failed to update user data");
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/user/updateNewUser",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            access_token: Cookies.get("access_token"),
+          },
+          body: JSON.stringify({
+            role: role,
+            phone: phone,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to update user data");
+      }
+    } catch (error) {
+      console.error(error);
+    }
     setRole("LEARNER");
     setPhone("94710627526");
     setIsNewUser(false);
@@ -262,6 +247,9 @@ const UserAccount = () => {
                           </option>
                           <option value="instructor" className="text-white">
                             Instructor
+                          </option>
+                          <option value="instructor" className="text-white">
+                            Adminss
                           </option>
                         </select>
                       </div>
